@@ -12,6 +12,9 @@ public class Main {
     			{-2, 5, 2, 2, 2, 0, 9,-2},
 				{-2,-2,-2,-2,-2,-2,-2,-2}};
 		Board board = new Board(ini_board);
+
+		
 		board.print();
+		
 	}
 }
