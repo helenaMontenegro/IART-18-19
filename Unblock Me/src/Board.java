@@ -2,13 +2,19 @@ import java.util.ArrayList;
 
 public class Board {
 	int[][] board;
+	ArrayList<Block> blocks;
 	Board(int[][] board) {
 		this.board = board;
+		blocks = new ArrayList<>();
 	}
 	
-	public ArrayList<Board> generate_successors() {
+	public ArrayList<Board> generate_successors() { //TODO
 		ArrayList<Board> successors = new ArrayList<>();
 		return successors;
+	}
+	
+	public void build_blocks() { //TODO
+		
 	}
 	
 	public void print() {
