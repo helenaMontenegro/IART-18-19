@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public class Main {
 
@@ -15,6 +16,11 @@ public class Main {
 
 		
 		board.print();
-		
+		System.out.println("SUCCESSORS:");
+		ArrayList<Board> successors = board.generate_successors();
+		for(int i = 0; i < successors.size(); i++) {
+			successors.get(i).print();
+			System.out.println();
+		}
 	}
 }

@@ -6,11 +6,48 @@ public class Board {
 
 	Board(int[][] board) {
 		this.board = board;
-		blocks = new ArrayList<>();
+		this.blocks = new ArrayList<>();
+		this.build_blocks();
 	}
 
 	public ArrayList<Board> generate_successors() { // TODO
 		ArrayList<Board> successors = new ArrayList<>();
+		for(int i = 0; i < this.blocks.size(); i++) {
+			int line_bef = this.blocks.get(i).get_line();
+			int column_bef = this.blocks.get(i).get_column();
+			int line_aft = this.blocks.get(i).get_line();
+			int column_aft = this.blocks.get(i).get_column();
+			int line_bef_empty = this.blocks.get(i).get_line();
+			int column_bef_empty = this.blocks.get(i).get_column();
+			int line_aft_empty = this.blocks.get(i).get_line();
+			int column_aft_empty = this.blocks.get(i).get_column();
+			if(this.blocks.get(i).get_direction().equals("horizontal")) {
+				column_bef--;
+				column_bef_empty += this.blocks.get(i).get_length()-1;
+				column_aft += this.blocks.get(i).get_length();
+			} else {
+				line_bef--;
+				line_bef_empty += this.blocks.get(i).get_length()-1;
+				line_aft += this.blocks.get(i).get_length();
+			}
+
+			//generate board with block moved to cell before
+			if(this.board[line_bef][column_bef] == 0) {
+				int[][] new_board_bef = this.copy_board();
+				new_board_bef[line_bef][column_bef] = this.blocks.get(i).get_id();
+				new_board_bef[line_bef_empty][column_bef_empty] = 0;
+				Board new_bef = new Board(new_board_bef);
+				successors.add(new_bef);
+			} 
+			//generate board with block moved to cell after
+			if(this.board[line_aft][column_aft] == 0) {
+				int[][] new_board_aft = this.copy_board();
+				new_board_aft[line_aft][column_aft] = this.blocks.get(i).get_id();
+				new_board_aft[line_aft_empty][column_aft_empty] = 0;
+				Board new_aft = new Board(new_board_aft);
+				successors.add(new_aft);
+			}
+		}
 		return successors;
 	}
 
@@ -24,7 +61,7 @@ public class Board {
 				if (this.board[i][j] > 0) // se for um bloco
 				{
 					found=false;
-					for (int x = 0; x < this.blocks.size(); x++) // verificar se o bloco já existe na lista
+					for (int x = 0; x < this.blocks.size(); x++) // verificar se o bloco jï¿½ existe na lista
 					{
 						if (this.board[i][j] == this.blocks.get(x).get_id()) {
 							// se existir aumenta o length
@@ -36,7 +73,7 @@ public class Board {
 					}
 					
 					System.out.println(found);
-					if (found == false) {// não encontrou o bloco -> cria um novo
+					if (found == false) {// nï¿½o encontrou o bloco -> cria um novo
 						Block newBlock = new Block(board[i][j], j, i);
 						blocks.add(newBlock);
 						
@@ -48,7 +85,17 @@ public class Board {
 		}
 
 	}
-
+	
+	public int[][] copy_board() {
+		int[][] new_array = new int[8][8];
+		for(int i = 0; i < this.board.length; i++) {
+			for(int j = 0; j < this.board[i].length; j++) {
+				new_array[i][j] = board[i][j];
+			}
+		}
+		return new_array;
+	}
+	
 	public void print() {
 		for (int i = 0; i < this.board.length; i++) {
 			for (int j = 0; j < this.board[i].length; j++) {
