@@ -72,7 +72,7 @@ public class Board {
 						
 					}
 					
-					System.out.println(found);
+					//System.out.println(found);
 					if (found == false) {// n�o encontrou o bloco -> cria um novo
 						Block newBlock = new Block(board[i][j], j, i);
 						blocks.add(newBlock);

@@ -15,6 +15,8 @@ public class Block {
 			this.direction = "horizontal";
 		else
 			this.direction = "vertical";
+		if(id == 1)
+			this.direction = "horizontal";
 	}
 	
 	public void increase_length() {
