@@ -2,15 +2,17 @@ import java.util.ArrayList;
 
 public class Board {
 	int[][] board;
+	Board parent;
 	ArrayList<Block> blocks;
 
-	Board(int[][] board) {
+	Board(int[][] board, Board parent_board) {
 		this.board = board;
 		this.blocks = new ArrayList<>();
-		this.build_blocks();
+		this.parent = parent_board;
 	}
 
-	public ArrayList<Board> generate_successors() { // TODO
+	public ArrayList<Board> generate_successors() {
+		this.build_blocks();
 		ArrayList<Board> successors = new ArrayList<>();
 		for(int i = 0; i < this.blocks.size(); i++) {
 			int line_bef = this.blocks.get(i).get_line();
@@ -36,16 +38,22 @@ public class Board {
 				int[][] new_board_bef = this.copy_board();
 				new_board_bef[line_bef][column_bef] = this.blocks.get(i).get_id();
 				new_board_bef[line_bef_empty][column_bef_empty] = 0;
-				Board new_bef = new Board(new_board_bef);
-				successors.add(new_bef);
+				Board new_bef = new Board(new_board_bef, this);
+				if(this.parent==null ||
+						(this.parent!= null && !this.parent.compare_board(new_bef))) {
+					successors.add(new_bef);
+				}
 			} 
 			//generate board with block moved to cell after
 			if(this.board[line_aft][column_aft] == 0) {
 				int[][] new_board_aft = this.copy_board();
 				new_board_aft[line_aft][column_aft] = this.blocks.get(i).get_id();
 				new_board_aft[line_aft_empty][column_aft_empty] = 0;
-				Board new_aft = new Board(new_board_aft);
-				successors.add(new_aft);
+				Board new_aft = new Board(new_board_aft, this);
+				if(this.parent==null ||
+						(this.parent!= null && !this.parent.compare_board(new_aft))) {
+					successors.add(new_aft);
+				}
 			}
 		}
 		return successors;
@@ -86,6 +94,17 @@ public class Board {
 
 	}
 	
+	public Boolean is_final() {
+		if(this.board[3][6] == 1) {
+			return true;
+		}
+		return false;
+	}
+	
+	public Board get_parent() {
+		return this.parent;
+	}
+	
 	public int[][] copy_board() {
 		int[][] new_array = new int[8][8];
 		for(int i = 0; i < this.board.length; i++) {
@@ -121,5 +140,20 @@ public class Board {
 			}
 			System.out.println();
 		}
+	}
+	
+	public int[][] get_board() {
+		return this.board;
+	}
+	
+	public boolean compare_board(Board b) {
+		int[][] board_to_compare = b.get_board();
+		for(int i = 0; i < this.board.length; i++) {
+			for(int j = 0; j < this.board[i].length; j++) {
+				if(board[i][j] != board_to_compare[i][j])
+					return false;
+			}
+		}
+		return true;
 	}
 }
