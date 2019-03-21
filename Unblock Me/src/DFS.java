@@ -34,12 +34,13 @@ public class DFS {
 				}
 
 				else {
+					boards_to_expand.remove(0);
 					boards_to_expand.add(0,successors.get(i));
-					System.out.println("ola");
 				}
 			}
+
 				boards_explored.add(boards_to_expand.get(0));
-				boards_to_expand.remove(0);
+
 		}
 		return null;
 	}
