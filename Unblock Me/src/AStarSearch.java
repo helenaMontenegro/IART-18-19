@@ -1,11 +1,12 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class BFS {
+public class AStarSearch {
 	ArrayList<Board> boards_to_expand;
 	ArrayList<Board> boards_explored;
 	long elapsedTime;
 	
-	BFS(Board initial_board) {
+	AStarSearch(Board initial_board) {
 		boards_to_expand = new ArrayList<>();
 		boards_explored = new ArrayList<>();
 		boards_to_expand.add(initial_board);
@@ -15,12 +16,14 @@ public class BFS {
 		long start = System.currentTimeMillis();
 		while(!boards_to_expand.isEmpty()) {
 			boolean already_explored = false;
+			Collections.sort(boards_to_expand);
 			Board parent = boards_to_expand.get(0);
 			for(int n = 0; n < boards_explored.size(); n++) {
 				if(parent.compare_board(boards_explored.get(n))) {
 					already_explored = true;
 					continue;
 				}
+				
 			}
 			if(already_explored) {
 				boards_to_expand.remove(0);
@@ -37,7 +40,6 @@ public class BFS {
 			boards_explored.add(boards_to_expand.get(0));
 			boards_to_expand.remove(0);
 		}
-
 		this.elapsedTime = System.currentTimeMillis() - start;
 		return null;
 	}

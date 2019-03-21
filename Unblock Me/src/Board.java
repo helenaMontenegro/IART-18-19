@@ -1,14 +1,20 @@
 import java.util.ArrayList;
 
-public class Board {
+public class Board implements Comparable<Board> {
 	int[][] board;
 	Board parent;
 	ArrayList<Block> blocks;
+	int h; //distance to solution
+	int g; //distance already achieved
+	String search;
 
-	Board(int[][] board, Board parent_board) {
+	Board(int[][] board, Board parent_board, int h, int g, String search) {
 		this.board = board;
 		this.blocks = new ArrayList<>();
 		this.parent = parent_board;
+		this.h = h;
+		this.g = g;
+		this.search = search;
 	}
 
 	public ArrayList<Board> generate_successors() {
@@ -38,7 +44,7 @@ public class Board {
 				int[][] new_board_bef = this.copy_board();
 				new_board_bef[line_bef][column_bef] = this.blocks.get(i).get_id();
 				new_board_bef[line_bef_empty][column_bef_empty] = 0;
-				Board new_bef = new Board(new_board_bef, this);
+				Board new_bef = new Board(new_board_bef, this, calculate_h(new_board_bef), this.g+1, this.search);
 				if(this.parent==null ||
 						(this.parent!= null && !this.parent.compare_board(new_bef))) {
 					successors.add(new_bef);
@@ -49,7 +55,7 @@ public class Board {
 				int[][] new_board_aft = this.copy_board();
 				new_board_aft[line_aft][column_aft] = this.blocks.get(i).get_id();
 				new_board_aft[line_aft_empty][column_aft_empty] = 0;
-				Board new_aft = new Board(new_board_aft, this);
+				Board new_aft = new Board(new_board_aft, this, calculate_h(new_board_aft), this.g+1, this.search);
 				if(this.parent==null ||
 						(this.parent!= null && !this.parent.compare_board(new_aft))) {
 					successors.add(new_aft);
@@ -91,7 +97,30 @@ public class Board {
 
 			}
 		}
-
+	}
+	
+	/**
+	 * This function calculates the distance to the final board, taking into consideration the 
+	 * distance between block 1 and the exit and the number of blocks blocking its way.
+	 * @param board
+	 * @return
+	 */
+	public int calculate_h(int[][] board) {
+		int num_blocks = 0, distance_to_exit = 0;
+		boolean found_block = false;
+		for(int i = 0; i < board[3].length; i++) {
+			if(board[3][i]==1)
+				found_block = true;
+			else if(!found_block)
+				continue;
+			else if(found_block && board[3][i] > 1) {
+				num_blocks++;
+				distance_to_exit++;
+			}
+			else if(found_block && board[3][i] != 1 && board[3][i] != -1)
+				distance_to_exit++;
+		}
+		return num_blocks + distance_to_exit;
 	}
 	
 	public Boolean is_final() {
@@ -103,6 +132,14 @@ public class Board {
 	
 	public Board get_parent() {
 		return this.parent;
+	}
+	
+	public int get_g() {
+		return this.g;
+	}
+	
+	public int get_h() {
+		return this.h;
 	}
 	
 	public int[][] copy_board() {
@@ -156,4 +193,11 @@ public class Board {
 		}
 		return true;
 	}
+	
+	@Override
+    public int compareTo(Board b) {
+		if(this.search == "a_star")
+			return (this.g+this.h)-(b.get_g()+b.get_h());
+		return 0;
+    }
 }
