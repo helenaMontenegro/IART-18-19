@@ -27,6 +27,9 @@ public class DFS {
 				}
 				
 			ArrayList<Board> successors = parent.generate_successors();
+
+			boards_explored.add(boards_to_expand.get(0));
+			boards_to_expand.remove(0);
 			
 			for(int i = 0; i < successors.size(); i++) {
 				if(successors.get(i).is_final()) {
@@ -34,13 +37,9 @@ public class DFS {
 				}
 
 				else {
-					boards_to_expand.remove(0);
 					boards_to_expand.add(0,successors.get(i));
 				}
 			}
-
-				boards_explored.add(boards_to_expand.get(0));
-
 		}
 		return null;
 	}

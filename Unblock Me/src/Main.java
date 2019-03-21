@@ -16,8 +16,8 @@ public class Main {
 		Board board = new Board(ini_board, null, 0, 0, type_of_search);
 
 		//BFS search = new BFS(board);
-		//DFS search = new DFS(board);
-		AStarSearch search = new AStarSearch(board);
+		DFS search = new DFS(board);
+		//AStarSearch search = new AStarSearch(board);
 		Board final_board = search.run();
 		if(final_board == null) {
 			System.err.println("Final board not found!");
@@ -26,11 +26,9 @@ public class Main {
 		ArrayList<Board> sequence = search.generate_sequence(final_board);
 		for(int i = 0; i < sequence.size(); i++) {
 			sequence.get(i).print();
-			System.out.println(sequence.get(i).get_g());
-			System.out.println(sequence.get(i).get_h());
 		}
 
 		System.out.println("Number of moves: " + sequence.size());
-		System.out.println("Time needed: " + search.get_time()/1000F + " seconds");
+		//System.out.println("Time needed: " + search.get_time()/1000F + " seconds");
 	}
 }
