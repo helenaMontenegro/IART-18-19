@@ -14,12 +14,15 @@ public class Main {
 				{-2,-2,-2,-2,-2,-2,-2,-2}};
 		Board board = new Board(ini_board, null);
 
-		BFS bfs = new BFS(board);
-		Board final_board = bfs.run();
-		ArrayList<Board> sequence = bfs.generate_sequence(final_board);
+		DFS dfs = new DFS(board);
+		System.out.println("Number of moves: ");
+		Board final_board = dfs.run();
+		System.out.println("Number of moves: ");
+		ArrayList<Board> sequence = dfs.generate_sequence(final_board);
 		for(int i = 0; i < sequence.size(); i++) {
 			sequence.get(i).print();
 		}
+
 		System.out.println("Number of moves: " + sequence.size());
 	}
 }
