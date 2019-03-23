@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class BFS {
+public class BFS implements Search {
 	ArrayList<Board> boards_to_expand;
 	ArrayList<Board> boards_explored;
 	long elapsedTime;

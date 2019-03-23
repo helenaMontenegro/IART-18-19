@@ -1,9 +1,10 @@
 import java.util.ArrayList;
 
-public class DFS {
+public class DFS implements Search {
 	ArrayList<Board> boards_to_expand;
 	ArrayList<Board> boards_explored;
-	
+	long elapsedTime;
+
 	DFS(Board initial_board) {
 		boards_to_expand = new ArrayList<>();
 		boards_explored = new ArrayList<>();
@@ -11,6 +12,7 @@ public class DFS {
 	}
 	
 	public Board run() {
+		long start = System.currentTimeMillis();
 		while(!boards_to_expand.isEmpty()) {
 			boolean already_explored = false;
 			Board parent = boards_to_expand.get(0);
@@ -41,6 +43,7 @@ public class DFS {
 				}
 			}
 		}
+		this.elapsedTime = System.currentTimeMillis() - start;
 		return null;
 	}
 	
@@ -53,5 +56,10 @@ public class DFS {
 			board = board.get_parent();
 		}
 		return sequence;
+	}
+
+	@Override
+	public long get_time() {
+		return this.elapsedTime;
 	}
 }

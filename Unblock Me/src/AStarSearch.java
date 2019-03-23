@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class AStarSearch {
+public class AStarSearch implements Search{
 	ArrayList<Board> boards_to_expand;
 	ArrayList<Board> boards_explored;
 	long elapsedTime;
