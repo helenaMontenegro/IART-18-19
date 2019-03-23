@@ -77,9 +77,10 @@ public class Main {
 
         int option = getOption(1, 4);
 
-        String type_of_search = ""; //so necessaria na greedy e na a_star, para o compareTo do board
-        Search search;
+        String type_of_search = "greedy"; //so necessaria na greedy e na a_star, para o compareTo do board
+        Search search = null;
         Board board;
+        System.out.println(option);
         switch (option) {
             case 1:
                 board = new Board(ini_board, null, 0, 0, type_of_search);
@@ -95,12 +96,7 @@ public class Main {
                 search = new GreedySearch(board);
                 break;
             case 4:
-                type_of_search = "a_start";
-                board = new Board(ini_board, null, 0, 0, type_of_search);
-                search = new AStarSearch(board);
-                break;
-            default:
-                type_of_search = "a_start";
+                type_of_search = "a_star";
                 board = new Board(ini_board, null, 0, 0, type_of_search);
                 search = new AStarSearch(board);
                 break;
@@ -118,6 +114,7 @@ public class Main {
 
         System.out.println("Number of moves: " + sequence.size());
         System.out.println("Time needed: " + search.get_time()/1000F + " seconds");
+
 
 
     }

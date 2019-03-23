@@ -1,15 +1,10 @@
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class GreedySearch implements Search {
-    ArrayList<Board> boards_to_expand;
-    ArrayList<Board> boards_explored;
-    long elapsedTime;
+public class GreedySearch extends Search {
 
     GreedySearch(Board initial_board) {
-        boards_to_expand = new ArrayList<>();
-        boards_explored = new ArrayList<>();
-        boards_to_expand.add(initial_board);
+       super(initial_board);
     }
 
     public Board run() {
@@ -40,21 +35,8 @@ public class GreedySearch implements Search {
             boards_explored.add(boards_to_expand.get(0));
             boards_to_expand.remove(0);
         }
-        this.elapsedTime = System.currentTimeMillis() - start;
+        super.elapsedTime = System.currentTimeMillis() - start;
         return null;
     }
 
-    public ArrayList<Board> generate_sequence(Board final_board) {
-        ArrayList<Board> sequence = new ArrayList<>();
-        Board board = final_board;
-        while(board != null) {
-            sequence.add(0, board);
-            board = board.get_parent();
-        }
-        return sequence;
-    }
-
-    public long get_time() {
-        return this.elapsedTime;
-    }
 }
