@@ -12,11 +12,12 @@ public class Main {
 				{-2, 5, 0, 0, 0, 7, 0,-2},
     			{-2, 2, 2, 2, 0, 7, 0,-2},
 				{-2,-2,-2,-2,-2,-2,-2,-2}};
-		String type_of_search = "a_star"; //so necessaria na greedy e na a_star, para o compareTo do board
+		String type_of_search = "greedy"; //so necessaria na greedy e na a_star, para o compareTo do board
 		Board board = new Board(ini_board, null, 0, 0, type_of_search);
 
 		//BFS search = new BFS(board);
-		DFS search = new DFS(board);
+		//DFS search = new DFS(board);
+		GreedySearch search = new GreedySearch(board);
 		//AStarSearch search = new AStarSearch(board);
 		Board final_board = search.run();
 		if(final_board == null) {

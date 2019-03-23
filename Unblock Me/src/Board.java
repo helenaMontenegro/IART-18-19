@@ -198,6 +198,8 @@ public class Board implements Comparable<Board> {
     public int compareTo(Board b) {
 		if(this.search == "a_star")
 			return (this.g+this.h)-(b.get_g()+b.get_h());
+		else if(this.search == "greedy")
+			return this.h-b.get_h();
 		return 0;
     }
 }
