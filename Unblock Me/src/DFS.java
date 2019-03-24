@@ -31,6 +31,7 @@ public class DFS extends Search {
 			
 			for(int i = 0; i < successors.size(); i++) {
 				if(successors.get(i).is_final()) {
+					super.elapsedTime = System.currentTimeMillis() - start;
 					return successors.get(i);
 				}
 

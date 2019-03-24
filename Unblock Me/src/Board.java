@@ -15,10 +15,10 @@ public class Board implements Comparable<Board> {
 		this.h = h;
 		this.g = g;
 		this.search = search;
+		this.build_blocks();
 	}
 
 	public ArrayList<Board> generate_successors() {
-		this.build_blocks();
 		ArrayList<Board> successors = new ArrayList<>();
 		for(int i = 0; i < this.blocks.size(); i++) {
 			int line_bef = this.blocks.get(i).get_line();
@@ -38,7 +38,6 @@ public class Board implements Comparable<Board> {
 				line_bef_empty += this.blocks.get(i).get_length()-1;
 				line_aft += this.blocks.get(i).get_length();
 			}
-
 			//generate board with block moved to cell before
 			if(this.board[line_bef][column_bef] == 0) {
 				int[][] new_board_bef = this.copy_board();
@@ -62,6 +61,7 @@ public class Board implements Comparable<Board> {
 				}
 			}
 		}
+
 		return successors;
 	}
 
@@ -86,7 +86,6 @@ public class Board implements Comparable<Board> {
 						
 					}
 					
-					//System.out.println(found);
 					if (found == false) {// n�o encontrou o bloco -> cria um novo
 						Block newBlock = new Block(board[i][j], j, i);
 						blocks.add(newBlock);
@@ -132,6 +131,10 @@ public class Board implements Comparable<Board> {
 	
 	public Board get_parent() {
 		return this.parent;
+	}
+	
+	public void set_parent(Board parent) {
+		this.parent = parent;
 	}
 	
 	public int get_g() {
@@ -192,6 +195,16 @@ public class Board implements Comparable<Board> {
 			}
 		}
 		return true;
+	}
+	
+	public int get_depth() {
+		int depth = 0;
+		Board b_parent = this.parent;
+		while(b_parent != null) {
+			depth++;
+			b_parent = b_parent.get_parent();
+		}
+		return depth;
 	}
 	
 	@Override

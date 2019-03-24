@@ -14,17 +14,17 @@ public class Main {
                 {-2, 2, 2, 2, 0, 7, 0, -2},
                 {-2, -2, -2, -2, -2, -2, -2, -2}};
         mainMenu(ini_board);
-
+        
     }
 
     private static void mainMenu(int[][] ini_board) {
-        System.out.println("----------------");
-        System.out.println("|   Unblock Me  ");
+        System.out.println("-----------------");
+        System.out.println("|   Unblock Me  |");
         System.out.println("|               |");
         System.out.println("|   1-Human     |");
         System.out.println("|   2-PC        |");
         System.out.println("|               |");
-        System.out.println("----------------");
+        System.out.println("-----------------");
 
 
         int option = getOption(1, 2);
@@ -65,22 +65,22 @@ public class Main {
 
 
     private static void searchMenu(int[][] ini_board) {
-        System.out.println("----------------");
-        System.out.println("|   Unblock Me  ");
-        System.out.println("|               |");
-        System.out.println("|   1-DFS       |");
-        System.out.println("|   2-BFS       |");
-        System.out.println("|   3-Greedy    |");
-        System.out.println("|   4-A*        |");
-        System.out.println("|               |");
-        System.out.println("----------------");
+        System.out.println("------------------------------");
+        System.out.println("|   Unblock Me               |");
+        System.out.println("|                            |");
+        System.out.println("|   1-DFS                    |");
+        System.out.println("|   2-BFS                    |");
+        System.out.println("|   3-Iterative Deepening    |");
+        System.out.println("|   4-Greedy                 |");
+        System.out.println("|   5-A*                     |");
+        System.out.println("|                            |");
+        System.out.println("------------------------------");
 
-        int option = getOption(1, 4);
+        int option = getOption(1, 5);
 
-        String type_of_search = "greedy"; //so necessaria na greedy e na a_star, para o compareTo do board
+        String type_of_search = "greedy";
         Search search = null;
         Board board;
-        System.out.println(option);
         switch (option) {
             case 1:
                 board = new Board(ini_board, null, 0, 0, type_of_search);
@@ -91,11 +91,15 @@ public class Main {
                 search = new BFS(board);
                 break;
             case 3:
+            	board = new Board(ini_board, null, 0, 0, type_of_search);
+                search = new IterativeDeepeningSearch(board);
+                break;
+            case 4:
                 type_of_search = "greedy";
                 board = new Board(ini_board, null, 0, 0, type_of_search);
                 search = new GreedySearch(board);
                 break;
-            case 4:
+            case 5:
                 type_of_search = "a_star";
                 board = new Board(ini_board, null, 0, 0, type_of_search);
                 search = new AStarSearch(board);
