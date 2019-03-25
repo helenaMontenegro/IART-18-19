@@ -13,7 +13,16 @@ public class Main {
                 {-2, 5, 0, 0, 0, 7, 0, -2},
                 {-2, 2, 2, 2, 0, 7, 0, -2},
                 {-2, -2, -2, -2, -2, -2, -2, -2}};
-        mainMenu(ini_board);
+        int[][] ini_board2 = {
+                {-2, -2, -2, -2, -2, -2, -2, -2},
+                {-2, 3, 6, 6, 8, 8, 0, -2},
+                {-2, 3, 0,14,14,15, 0, -2},
+                {-2, 1, 1,11,13,15, 0, -1},
+                {-2, 0, 9,11,13, 4, 4, -2},
+                {-2, 5, 9,11,10,10, 7, -2},
+                {-2, 5,12,12, 2, 2, 7, -2},
+                {-2, -2, -2, -2, -2, -2, -2, -2}};
+        mainMenu(ini_board2);
         
     }
 
@@ -91,6 +100,7 @@ public class Main {
                 search = new BFS(board);
                 break;
             case 3:
+                type_of_search = "iter_deep";
             	board = new Board(ini_board, null, 0, 0, type_of_search);
                 search = new IterativeDeepeningSearch(board);
                 break;
@@ -115,11 +125,8 @@ public class Main {
         for(int i = 0; i < sequence.size(); i++) {
             sequence.get(i).print();
         }
-
+        
         System.out.println("Number of moves: " + sequence.size());
         System.out.println("Time needed: " + search.get_time()/1000F + " seconds");
-
-
-
     }
 }
