@@ -32,12 +32,6 @@ public class Board implements Comparable<Board> {
 
 	public ArrayList<Board> generate_successors() {
 		if(this.successors != null) {
-			for(int i = 0; i < this.successors.size(); i++) {
-				if(this.successors.get(i).get_parent() != this && this.successors.get(i).get_parent().get_depth() >= this.depth) {
-					this.successors.get(i).set_parent(this);
-				}
-				this.successors.get(i).set_depth();
-			}
 			return this.successors;
 		}
 		this.successors = new ArrayList<>();
@@ -65,7 +59,8 @@ public class Board implements Comparable<Board> {
 				new_board_bef[line_bef][column_bef] = this.blocks.get(i).get_id();
 				new_board_bef[line_bef_empty][column_bef_empty] = 0;
 				Board new_bef = new Board(new_board_bef, this, calculate_h(new_board_bef), this.g+1, this.search, this.depth+1);
-				this.successors.add(new_bef);
+				if(this.parent == null || (this.parent != null && !this.parent.compare_board(new_bef)))
+					this.successors.add(new_bef);
 			} 
 			//generate board with block moved to cell after
 			if(this.board[line_aft][column_aft] == 0) {
@@ -73,7 +68,8 @@ public class Board implements Comparable<Board> {
 				new_board_aft[line_aft][column_aft] = this.blocks.get(i).get_id();
 				new_board_aft[line_aft_empty][column_aft_empty] = 0;
 				Board new_aft = new Board(new_board_aft, this, calculate_h(new_board_aft), this.g+1, this.search, this.depth+1);
-				this.successors.add(new_aft);
+				if(this.parent == null || (this.parent != null && !this.parent.compare_board(new_aft)))
+					this.successors.add(new_aft);
 			}
 		}
 
@@ -150,6 +146,7 @@ public class Board implements Comparable<Board> {
 	
 	public void set_parent(Board parent) {
 		this.parent = parent;
+		this.set_depth();
 	}
 	
 	public int get_g() {
@@ -238,9 +235,9 @@ public class Board implements Comparable<Board> {
 		else if(this.search.equals("greedy"))
 			return this.h-b.get_h();
 		else if(this.search.equals("iter_deep")) {
-			if(b.get_depth()-this.depth<0)
-				return 1;
 			if(b.get_depth()-this.depth>0)
+				return 1;
+			if(b.get_depth()-this.depth<0)
 				return -1;
 		}
 		return 0;
