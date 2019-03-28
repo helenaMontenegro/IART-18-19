@@ -81,7 +81,7 @@ public class Main {
 	    	can_move[1] = false;
 	    	can_move[2] = false;
 	    	boolean dont_get_out = false;
-	    	System.out.println("Choose the number of the block you want to move.");
+	    	System.out.println("Choose the number of the block you want to move or 0 for a hint.");
 	    	do {
 	            try {
 	                System.out.println("Option:");
@@ -91,17 +91,25 @@ public class Main {
 	                System.out.println("Invalid Input");
 	                continue;
 	            }
-	            if(block < 1){
+	            if(block < 0){
 	                System.out.println("Invalid Block");
-	            } else {
+	            } else if(block != 0){
 	            	can_move = board.can_block_move(block);
 	            	if(can_move[0] == false && can_move[1] == false) {
 	            		System.out.println("The chosen block can't move!");
 	            		dont_get_out=true;
 	            	}
 	            }
-	        } while (block < 1 || dont_get_out);
-	    	System.out.println("BLOCK CHOSEN: " + block);
+	        } while (block < 0 || dont_get_out);
+	    	
+	    	if(block == 0) {
+	    		Search search = new AStarSearch(board);
+	    		Board final_board = search.run();
+	    		board = search.generate_sequence(final_board).get(1);
+	    		board.print_for_human();
+	    		continue;
+	    	}
+
 	    	int direction = 1;
 	    	if(can_move[0] && can_move[1]) {
 	    		if(can_move[2])

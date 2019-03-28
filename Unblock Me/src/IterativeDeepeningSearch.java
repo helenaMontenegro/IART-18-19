@@ -25,12 +25,11 @@ public class IterativeDeepeningSearch extends Search{
 					if(parent.compare_board(boards_to_expand.get(n))) {
 						if(boards_to_expand.get(n).get_depth() >= depth) {
 							boards_to_expand.remove(boards_to_expand.get(n));
-							continue;
 						}
 						else {
 							boards_to_expand.remove(0);
 							already_explored = true;
-							continue;
+							break;
 						}
 					}
 				}
@@ -45,7 +44,7 @@ public class IterativeDeepeningSearch extends Search{
 							continue;
 						else {
 							already_explored = true;
-							continue;
+							break;
 						}
 					}
 				}
