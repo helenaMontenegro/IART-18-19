@@ -75,6 +75,35 @@ public class Board implements Comparable<Board> {
 
 		return this.successors;
 	}
+	
+	public Board generate_specific_successor(int block_id, int direction) {
+		Board new_board = null;
+		System.out.println(block_id);
+		for(int i = 0; i < this.blocks.size(); i++) {
+			if(this.blocks.get(i).get_id() == block_id) {
+				int new_line = this.blocks.get(i).get_line();
+				int new_column = this.blocks.get(i).get_column();
+				int old_line = this.blocks.get(i).get_line();
+				int old_column = this.blocks.get(i).get_column();
+				if(direction == 1 && this.blocks.get(i).get_direction().equals("vertical")) {
+					new_line--;
+					old_line += this.blocks.get(i).get_length()-1;
+				} else if(direction == 1) {
+					new_column--; 
+					old_column += this.blocks.get(i).get_length()-1;
+				} else if(direction == 2 && this.blocks.get(i).get_direction().equals("vertical")) {
+					new_line += this.blocks.get(i).get_length();
+				} else {
+					new_column += this.blocks.get(i).get_length();
+				}
+				int[][] new_board_matrix = this.copy_board();
+				new_board_matrix[new_line][new_column] = this.blocks.get(i).get_id();
+				new_board_matrix[old_line][old_column] = 0;
+				new_board = new Board(new_board_matrix, this, calculate_h(new_board_matrix), this.g+1, this.search, this.depth+1);
+			}
+		}
+		return new_board;
+	}
 
 	public void build_blocks() {
 		boolean found = false;
@@ -167,6 +196,58 @@ public class Board implements Comparable<Board> {
 		return new_array;
 	}
 	
+	public ArrayList<Block> get_blocks() {
+		return this.blocks;
+	}
+	
+	public void print_for_human() {
+		for (int i = 0; i < this.board.length; i++) {
+			for (int j = 0; j < this.board[i].length; j++) {
+				if (this.board[i][j] == -2) {
+					if (i == 0 || i == this.board.length - 1) {
+						System.out.print("--");
+					} else if (j == 0) {
+						System.out.print("| ");
+					} else if (j == this.board[i].length - 1) {
+						System.out.print(" |");
+					}
+				} else if (this.board[i][j] == 0) {
+					System.out.print("  ");
+				} else if (this.board[i][j] == 1) {
+					System.out.print("@@");
+				} else if (this.board[i][j] > 1) {
+					if (this.board[i][j] % 2 == 0) {
+						System.out.print(">>");
+					} else {
+						System.out.print("\\/");
+					}
+				} else if (this.board[i][j] == -1) {
+					System.out.print("  ");
+				}
+			}
+			System.out.print("     ");
+			for (int j = 0; j < this.board[i].length; j++) {
+				if (this.board[i][j] == -2) {
+					if (i == 0 || i == this.board.length - 1) {
+						System.out.print("---");
+					} else if (j == 0) {
+						System.out.print("|  ");
+					} else if (j == this.board[i].length - 1) {
+						System.out.print("  |");
+					}
+				} else if (this.board[i][j] == 0) {
+					System.out.print("   ");
+				} else if (this.board[i][j] > 0) {
+					if(this.board[i][j] / 10 >= 1)
+						System.out.print(" " + this.board[i][j]);
+					else
+						System.out.print(" " + this.board[i][j] + " ");
+				}
+			}
+			System.out.println();
+		}
+	}
+	
 	public void print() {
 		for (int i = 0; i < this.board.length; i++) {
 			for (int j = 0; j < this.board[i].length; j++) {
@@ -226,6 +307,34 @@ public class Board implements Comparable<Board> {
 	
 	public void set_successors(ArrayList<Board> successors) {
 		this.successors = successors;
+	}
+	
+	public boolean[] can_block_move(int block_id) {
+		boolean[] can_move = new boolean[3];
+		can_move[0] = false; //can move to place before?
+		can_move[1] = false; //can move to place after?
+		can_move[2] = false; //moves horizontally -> true else false
+		for(int i = 0; i < this.blocks.size(); i++) {
+			if(this.blocks.get(i).get_id() == block_id) {
+				int line_bef = this.blocks.get(i).get_line();
+				int column_bef = this.blocks.get(i).get_column();
+				int line_aft = this.blocks.get(i).get_line();
+				int column_aft = this.blocks.get(i).get_column();
+				if(this.blocks.get(i).get_direction().equals("horizontal")) {
+					column_bef--;
+					column_aft += this.blocks.get(i).get_length();
+					can_move[2] = true;
+				} else {
+					line_bef--;
+					line_aft += this.blocks.get(i).get_length();
+				}
+				if(this.board[line_bef][column_bef] == 0)
+					can_move[0] = true;
+				if(this.board[line_aft][column_aft] == 0)
+					can_move[1] = true;
+			}
+		}
+		return can_move;
 	}
 	
 	@Override

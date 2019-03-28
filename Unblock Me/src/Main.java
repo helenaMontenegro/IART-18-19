@@ -22,7 +22,7 @@ public class Main {
                 {-2, 5, 9,11,10,10, 7, -2},
                 {-2, 5,12,12, 2, 2, 7, -2},
                 {-2, -2, -2, -2, -2, -2, -2, -2}};
-        mainMenu(ini_board2);
+        mainMenu(ini_board);
         
     }
 
@@ -69,7 +69,55 @@ public class Main {
         } while (option < min || option > max);
         return option;
     }
+    
     private static void humanMenu(int[][] ini_board) {
+    	Board board = new Board(ini_board, null, 0, 0, "a_star");
+    	board.print_for_human();
+    	
+    	while(!board.is_final()) {
+	    	int block = 0;
+	    	boolean[] can_move = new boolean[3];
+	    	can_move[0] = false;
+	    	can_move[1] = false;
+	    	can_move[2] = false;
+	    	boolean dont_get_out = false;
+	    	System.out.println("Choose the number of the block you want to move.");
+	    	do {
+	            try {
+	                System.out.println("Option:");
+	                Scanner sc = new Scanner(System.in);
+	                block = sc.nextInt();
+	            } catch (Exception e) {
+	                System.out.println("Invalid Input");
+	                continue;
+	            }
+	            if(block < 1){
+	                System.out.println("Invalid Block");
+	            } else {
+	            	can_move = board.can_block_move(block);
+	            	if(can_move[0] == false && can_move[1] == false) {
+	            		System.out.println("The chosen block can't move!");
+	            		dont_get_out=true;
+	            	}
+	            }
+	        } while (block < 1 || dont_get_out);
+	    	System.out.println("BLOCK CHOSEN: " + block);
+	    	int direction = 1;
+	    	if(can_move[0] && can_move[1]) {
+	    		if(can_move[2])
+	    			System.out.println("Choose 1 to move left or 2 to move right.");
+	    		else
+	    			System.out.println("Choose 1 to move up or 2 to move down.");
+	    		direction = getOption(1, 2);
+	    	} else if(can_move[0]) {
+	    		direction = 1;
+	    	} else
+	    		direction = 2;
+	    	board = board.generate_specific_successor(block, direction);
+	    	board.print_for_human();
+    	}
+    	System.out.println("You win!");
+    	
     }
 
 
