@@ -1,10 +1,16 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Arrays;
 
 public class Main {
 
     public static void main(String[] args) {
-        int[][] ini_board = {
+        Scanner sc = new Scanner(System.in);
+        String filename= sc.nextLine();
+        /*int[][] ini_board = {
                 {-2, -2, -2, -2, -2, -2, -2, -2},
                 {-2, 6, 6, 6, 0, 0, 9, -2},
                 {-2, 0, 0, 3, 0, 0, 9, -2},
@@ -13,7 +19,8 @@ public class Main {
                 {-2, 5, 0, 0, 0, 7, 0, -2},
                 {-2, 2, 2, 2, 0, 7, 0, -2},
                 {-2, -2, -2, -2, -2, -2, -2, -2}};
-        int[][] ini_board2 = {
+        
+                int[][] ini_board2 = {
                 {-2, -2, -2, -2, -2, -2, -2, -2},
                 {-2, 3, 6, 6, 8, 8, 0, -2},
                 {-2, 3, 0,14,14,15, 0, -2},
@@ -21,8 +28,11 @@ public class Main {
                 {-2, 0, 9,11,13, 4, 4, -2},
                 {-2, 5, 9,11,10,10, 7, -2},
                 {-2, 5,12,12, 2, 2, 7, -2},
-                {-2, -2, -2, -2, -2, -2, -2, -2}};
+                {-2, -2, -2, -2, -2, -2, -2, -2}};*/
+        
+        int[][] ini_board = parseBoard(filename);
         mainMenu(ini_board);
+        sc.close();
         
     }
 
@@ -68,6 +78,31 @@ public class Main {
             }
         } while (option < min || option > max);
         return option;
+    }
+
+    private static int[][] parseBoard(String filename){
+        BufferedReader reader; 
+        String next_element;
+        String[] line;
+        int[][] board= new int[8][];
+
+        try{
+            reader= new BufferedReader(new FileReader(filename));
+           
+            int i=0;
+            while( (next_element=reader.readLine()) != null){
+               
+                line=next_element.split(",");
+                int[] first_line = Arrays.asList(line).stream().mapToInt(Integer::parseInt).toArray();
+                board[i]=first_line;
+                i++;
+            }
+            reader.close();
+            
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return board;
     }
     
     private static void humanMenu(int[][] ini_board) {
