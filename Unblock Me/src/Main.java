@@ -103,9 +103,11 @@ public class Main {
 	        } while (block < 0 || dont_get_out);
 	    	
 	    	if(block == 0) {
+	    		board.set_parent(null);
 	    		Search search = new AStarSearch(board);
 	    		Board final_board = search.run();
-	    		board = search.generate_sequence(final_board).get(1);
+	    		ArrayList<Board> sequence = search.generate_sequence(final_board);
+	    		board = sequence.get(1);
 	    		board.print_for_human();
 	    		continue;
 	    	}
