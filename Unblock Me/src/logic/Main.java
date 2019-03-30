@@ -1,3 +1,8 @@
+package logic;
+
+import logic.AStarSearch;
+import logic.Search;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.FileReader;
@@ -6,6 +11,7 @@ import java.util.Scanner;
 import java.util.Arrays;
 
 public class Main {
+    private static int[][] ini_board;
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -30,13 +36,14 @@ public class Main {
                 {-2, 5,12,12, 2, 2, 7, -2},
                 {-2, -2, -2, -2, -2, -2, -2, -2}};*/
         
-        int[][] ini_board = parseBoard(filename);
+        ini_board = parseBoard(filename);
         mainMenu(ini_board);
         sc.close();
         
     }
 
-    private static void mainMenu(int[][] ini_board) {
+
+    public static void mainMenu(int[][] ini_board) {
         System.out.println("-----------------");
         System.out.println("|   Unblock Me  |");
         System.out.println("|               |");
@@ -80,7 +87,7 @@ public class Main {
         return option;
     }
 
-    private static int[][] parseBoard(String filename){
+    public static int[][] parseBoard(String filename){
         BufferedReader reader; 
         String next_element;
         String[] line;
@@ -100,7 +107,8 @@ public class Main {
             reader.close();
             
         }catch (IOException e){
-            e.printStackTrace();
+            System.out.println("File Not Found");
+            return null;
         }
         return board;
     }

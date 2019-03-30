@@ -1,9 +1,11 @@
+package logic;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class AStarSearch extends Search{
+public class AStarSearch extends Search {
 
-	AStarSearch(Board initial_board) {
+	public AStarSearch(Board initial_board) {
 		super(initial_board);
 	}
 	

@@ -1,8 +1,12 @@
+package logic;
+
+import logic.Search;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class IterativeDeepeningSearch extends Search{
-	IterativeDeepeningSearch(Board initial_board) {
+public class IterativeDeepeningSearch extends Search {
+	public IterativeDeepeningSearch(Board initial_board) {
 		super(initial_board);
 	}
 	

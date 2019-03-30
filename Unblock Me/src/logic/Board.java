@@ -1,3 +1,5 @@
+package logic;
+
 import java.util.ArrayList;
 
 public class Board implements Comparable<Board> {
@@ -15,7 +17,7 @@ public class Board implements Comparable<Board> {
 		this.depth = depth;
 	}
 	
-	Board(int[][] board, Board parent_board, int h, int g, String search) {
+	public Board(int[][] board, Board parent_board, int h, int g, String search) {
 		this.build_board(board, parent_board, h, g, search);
 		this.depth = 0;
 	}

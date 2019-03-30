@@ -1,9 +1,13 @@
+package logic;
+
+import logic.Search;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class GreedySearch extends Search {
 
-    GreedySearch(Board initial_board) {
+    public GreedySearch(Board initial_board) {
        super(initial_board);
     }
 
