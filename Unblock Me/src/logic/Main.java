@@ -14,27 +14,10 @@ public class Main {
     private static int[][] ini_board;
 
     public static void main(String[] args) {
+
+        System.out.println("Insert name of the file that contains the wanted board:");
         Scanner sc = new Scanner(System.in);
         String filename= sc.nextLine();
-        /*int[][] ini_board = {
-                {-2, -2, -2, -2, -2, -2, -2, -2},
-                {-2, 6, 6, 6, 0, 0, 9, -2},
-                {-2, 0, 0, 3, 0, 0, 9, -2},
-                {-2, 1, 1, 3, 0, 0, 9, -1},
-                {-2, 5, 0, 3, 0, 4, 4, -2},
-                {-2, 5, 0, 0, 0, 7, 0, -2},
-                {-2, 2, 2, 2, 0, 7, 0, -2},
-                {-2, -2, -2, -2, -2, -2, -2, -2}};
-        
-                int[][] ini_board2 = {
-                {-2, -2, -2, -2, -2, -2, -2, -2},
-                {-2, 3, 6, 6, 8, 8, 0, -2},
-                {-2, 3, 0,14,14,15, 0, -2},
-                {-2, 1, 1,11,13,15, 0, -1},
-                {-2, 0, 9,11,13, 4, 4, -2},
-                {-2, 5, 9,11,10,10, 7, -2},
-                {-2, 5,12,12, 2, 2, 7, -2},
-                {-2, -2, -2, -2, -2, -2, -2, -2}};*/
         
         ini_board = parseBoard(filename);
         mainMenu(ini_board);
@@ -150,8 +133,14 @@ public class Main {
 	    		Search search = new AStarSearch(board);
 	    		Board final_board = search.run();
 	    		ArrayList<Board> sequence = search.generate_sequence(final_board);
-	    		board = sequence.get(1);
-	    		board.print_for_human();
+	    		int[] move = board.check_moved_block(sequence.get(1));
+	    		System.out.print("Move block number " + move[0]);
+	    		switch(move[1]) {
+	    		case 0: System.out.println(" to the left."); break;
+	    		case 1: System.out.println(" to the right."); break;
+	    		case 2: System.out.println(" up."); break;
+	    		default: System.out.println(" down.");
+	    		}
 	    		continue;
 	    	}
 

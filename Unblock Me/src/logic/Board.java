@@ -339,6 +339,45 @@ public class Board implements Comparable<Board> {
 		return can_move;
 	}
 	
+	public int[] check_moved_block(Board b) {
+		boolean move_to_after = false, found = false;
+		int[] block_dir = new int[2]; //block_dir[0] -> block number; block_dir[1] -> block direction (0 - left, 1 - right, 2 - up, 3 - down)
+		for(int i = 0; i < this.board.length; i++) {
+			for(int j = 0; j < this.board[i].length; j++) {
+				if(this.board[i][j] != b.get_board()[i][j]) {
+					if(this.board[i][j] == 0) {
+						block_dir[0] = b.get_board()[i][j];
+						move_to_after = false;
+					} else {
+						block_dir[0] = this.board[i][j];
+						move_to_after = true;
+					}
+					found = true;
+					break;
+				}
+			}
+			if(found)
+				break;
+		}
+		for(int i = 0; i < this.blocks.size(); i++) {
+			if(this.blocks.get(i).get_id() == block_dir[0]) {
+				if (this.blocks.get(i).get_direction().equals("horizontal")) {
+					if(move_to_after)
+						block_dir[1] = 1;
+					else
+						block_dir[1] = 0;
+				} else {
+					if(move_to_after)
+						block_dir[1] = 3;
+					else
+						block_dir[1] = 2;
+				}
+				break;
+			}
+		}
+		return block_dir;
+	}
+	
 	@Override
     public int compareTo(Board b) {
 		if(this.search.equals("a_star"))
