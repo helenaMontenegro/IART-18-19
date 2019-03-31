@@ -128,22 +128,6 @@ public class Main {
 	            }
 	        } while (block < 0 || dont_get_out);
 	    	
-	    	if(block == 0) {
-	    		board.set_parent(null);
-	    		Search search = new AStarSearch(board);
-	    		Board final_board = search.run();
-	    		ArrayList<Board> sequence = search.generate_sequence(final_board);
-	    		int[] move = board.check_moved_block(sequence.get(1));
-	    		System.out.print("Move block number " + move[0]);
-	    		switch(move[1]) {
-	    		case 0: System.out.println(" to the left."); break;
-	    		case 1: System.out.println(" to the right."); break;
-	    		case 2: System.out.println(" up."); break;
-	    		default: System.out.println(" down.");
-	    		}
-	    		continue;
-	    	}
-
 	    	int direction = 1;
 	    	if(can_move[0] && can_move[1]) {
 	    		if(can_move[2])

@@ -45,13 +45,15 @@ public class UI {
 	 */
 	public UI() {
 		initialize();
+		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		frame.setVisible(true);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
+		frame = new JFrame("PC Mode");
 		frame.setBounds(100, 100, 702, 515);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -151,6 +153,16 @@ public class UI {
 
 		
 		PrintStream out = new PrintStream( new TextAreaOutputStream( textOutput ) );
+		
+		JButton btnHuman = new JButton("Human Mode");
+		btnHuman.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new HumanUI();
+				frame.dispose();
+			}
+		});
+		btnHuman.setBounds(538, 32, 109, 28);
+		frame.getContentPane().add(btnHuman);
 		System.setOut( out );
 		System.setErr( out );
 		
