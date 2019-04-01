@@ -199,7 +199,8 @@ public class Main {
         for(int i = 0; i < sequence.size(); i++) {
             sequence.get(i).print();
         }
-        
+
+        System.out.println("Number of states visited: " + search.get_num_boards_visited());
         System.out.println("Number of moves: " + sequence.size());
         System.out.println("Time needed: " + search.get_time()/1000F + " seconds");
     }

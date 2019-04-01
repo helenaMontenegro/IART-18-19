@@ -15,6 +15,7 @@ public class DFS extends Search {
 	public Board run() {
 		long start = System.currentTimeMillis();
 		while(!boards_to_expand.isEmpty()) {
+			num_boards_visited++;
 			boolean already_explored = false;
 			Board parent = boards_to_expand.get(0);
 

@@ -16,6 +16,7 @@ public class IterativeDeepeningSearch extends Search {
 		Board root = boards_to_expand.get(0);
 		for(; min_depth <= max_depth; min_depth++) {
 			while(!boards_to_expand.isEmpty()) {
+				num_boards_visited++;
 				boolean already_explored = false;
 				Board parent = boards_to_expand.get(0);
 				parent.set_depth();

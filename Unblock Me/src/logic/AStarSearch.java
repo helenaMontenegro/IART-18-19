@@ -12,6 +12,7 @@ public class AStarSearch extends Search {
 	public Board run() {
 		long start = System.currentTimeMillis();
 		while(!boards_to_expand.isEmpty()) {
+			num_boards_visited++;
 			boolean already_explored = false;
 			Collections.sort(boards_to_expand);
 			Board parent = boards_to_expand.get(0);

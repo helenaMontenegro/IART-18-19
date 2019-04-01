@@ -5,15 +5,21 @@ import java.util.ArrayList;
 public abstract class Search {
     protected ArrayList<Board> boards_to_expand;
     protected ArrayList<Board> boards_explored;
+    protected int num_boards_visited;
     protected long elapsedTime;
 
     Search(Board initial_board){
         boards_to_expand = new ArrayList<>();
         boards_explored = new ArrayList<>();
+        num_boards_visited = 0;
         boards_to_expand.add(initial_board);
     }
 
     public abstract Board run();
+    
+    public int get_num_boards_visited() {
+    	return num_boards_visited;
+    }
 
     public ArrayList<Board> generate_sequence(Board final_board){
         ArrayList<Board> sequence = new ArrayList<>();
