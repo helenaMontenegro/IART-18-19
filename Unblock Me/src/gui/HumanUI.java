@@ -12,6 +12,8 @@ import javax.swing.JScrollPane;
 
 import logic.*;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -72,9 +74,15 @@ public class HumanUI {
 		JButton btnLoadFile = new JButton("Load");
 		btnLoadFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ini_board = Main.parseBoard(textFile.getText());
-				board = new Board(ini_board, null, 0, 0, "a_star");
-		    	board.print_for_human();
+				try {
+			        FileReader file_reader = new FileReader(textFile.getText());
+			        ini_board = Main.parseBoard(file_reader);
+			        System.out.println("Loaded file.");
+					board = new Board(ini_board, null, 0, 0, "a_star");
+			    	board.print_for_human();
+				} catch (FileNotFoundException e) {
+					System.out.println("File not found.");
+				}
 			}
 		});
 		btnLoadFile.setBounds(253, 35, 89, 23);

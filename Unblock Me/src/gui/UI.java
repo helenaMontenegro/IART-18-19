@@ -12,8 +12,11 @@ import javax.swing.JScrollPane;
 
 import logic.*;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 public class UI {
@@ -67,7 +70,13 @@ public class UI {
 		JButton btnLoadFile = new JButton("Load");
 		btnLoadFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ini_board = Main.parseBoard(textFile.getText());
+				try {
+			        FileReader file_reader = new FileReader(textFile.getText());
+					ini_board = Main.parseBoard(file_reader);
+			        System.out.println("Loaded file.");
+				} catch (FileNotFoundException e) {
+					System.out.println("File not found.");
+				}
 			}
 		});
 		btnLoadFile.setBounds(253, 35, 89, 23);
@@ -126,7 +135,8 @@ public class UI {
 				       for(int i = 0; i < sequence.size(); i++) {
 				           sequence.get(i).print();
 				       }
-				        
+
+				       System.out.println("Number of states visited: " + search.get_num_boards_visited());
 				       System.out.println("Number of moves: " + sequence.size());
 				       System.out.println("Time needed: " + search.get_time()/1000F + " seconds");
 				}

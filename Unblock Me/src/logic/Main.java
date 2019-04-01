@@ -4,6 +4,7 @@ import logic.AStarSearch;
 import logic.Search;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -15,14 +16,21 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("Insert name of the file that contains the wanted board:");
-        Scanner sc = new Scanner(System.in);
-        String filename= sc.nextLine();
-        
-        ini_board = parseBoard(filename);
-        mainMenu(ini_board);
-        sc.close();
-        
+    	while(true)
+    	{
+	        System.out.println("Insert name of the file that contains the wanted board:");
+			try {
+				Scanner sc = new Scanner(System.in);
+		        String filename= sc.nextLine();
+		        FileReader file_reader = new FileReader(filename);
+		        ini_board = parseBoard(file_reader);
+		        mainMenu(ini_board);
+		        sc.close();
+		        break;
+			} catch (FileNotFoundException e) {
+				System.out.println("File not found.");
+			}
+    	}        
     }
 
 
@@ -70,14 +78,14 @@ public class Main {
         return option;
     }
 
-    public static int[][] parseBoard(String filename){
+    public static int[][] parseBoard(FileReader file_reader){
         BufferedReader reader; 
         String next_element;
         String[] line;
         int[][] board= new int[8][];
 
         try{
-            reader= new BufferedReader(new FileReader(filename));
+            reader= new BufferedReader(file_reader);
            
             int i=0;
             while( (next_element=reader.readLine()) != null){
