@@ -17,6 +17,10 @@ public abstract class Search {
 
     public abstract Board run();
     
+    public ArrayList<Board> get_boards_explored() {
+    	return this.boards_explored;
+    }
+    
     public int get_num_boards_visited() {
     	return num_boards_visited;
     }

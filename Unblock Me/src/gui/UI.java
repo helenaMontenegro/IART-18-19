@@ -26,6 +26,8 @@ public class UI {
 	private int[][] ini_board = null;
 	private Board board;
 	private Search search;
+	private ArrayList<Board> sequence;
+	private int step = 0;
 
 	/**
 	 * Launch the application.
@@ -57,7 +59,7 @@ public class UI {
 	 */
 	private void initialize() {
 		frame = new JFrame("PC Mode");
-		frame.setBounds(100, 100, 702, 515);
+		frame.setBounds(100, 100, 702, 692);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -66,6 +68,13 @@ public class UI {
 		frame.getContentPane().add(textFile);
 		textFile.setColumns(10);
 		
+		 Grid grid = new Grid();
+		 grid.setLocation(45, 442);
+ 
+         frame.getContentPane().add(grid);
+         grid.setSize(280,200);
+   
+  
 		
 		JButton btnLoadFile = new JButton("Load");
 		btnLoadFile.addActionListener(new ActionListener() {
@@ -74,6 +83,9 @@ public class UI {
 			        FileReader file_reader = new FileReader(textFile.getText());
 					ini_board = Main.parseBoard(file_reader);
 			        System.out.println("Loaded file.");
+			        grid.setBoard(ini_board);
+			        grid.repaint();
+			        
 				} catch (FileNotFoundException e) {
 					System.out.println("File not found.");
 				}
@@ -109,6 +121,61 @@ public class UI {
 		JRadioButton rdbtnAstarBoth = new JRadioButton("A*(both)");
 		rdbtnAstarBoth.setBounds(538, 212, 109, 23);
 		frame.getContentPane().add(rdbtnAstarBoth);
+		
+		JButton btnNextStep = new JButton("Next");
+		JButton btnPrevStep = new JButton("Previous");
+		btnPrevStep.setEnabled(false);
+		btnPrevStep.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				try {	
+				step--;
+				grid.setBoard(sequence.get(step).get_board());
+				
+				if(step == 0) {
+					btnPrevStep.setEnabled(false);
+				}
+				if(step < sequence.size()) {
+					btnNextStep.setEnabled(true);
+				}
+				}
+				catch(Exception e) {
+					System.out.println("Invalid Operation");
+				}
+				
+			}
+		});
+		btnPrevStep.setBounds(334, 470, 96, 23);
+		frame.getContentPane().add(btnPrevStep);
+		
+		
+		btnNextStep.setEnabled(false);
+		btnNextStep.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				try {	
+				grid.setBoard(sequence.get(step).get_board());
+				step++;
+			
+				
+				if(step >= sequence.size()) {
+					btnNextStep.setEnabled(false);
+				}
+				if(step > 0) {
+					btnPrevStep.setEnabled(true);
+				}
+				}
+				catch(Exception e) {
+					System.out.println("Board was finished");
+				}
+				
+			}
+		});
+		btnNextStep.setBounds(334, 524, 96, 23);
+		frame.getContentPane().add(btnNextStep);
+		
+		
+		
 		
 		JButton btnNewButton_1 = new JButton("Solve");
 		btnNewButton_1.addActionListener(new ActionListener() {
@@ -147,7 +214,7 @@ public class UI {
 				           System.err.println("Final board not found!");
 				           System.exit(-1);
 				       }
-				       ArrayList<Board> sequence = search.generate_sequence(final_board);
+				       sequence = search.generate_sequence(final_board);
 				       for(int i = 0; i < sequence.size(); i++) {
 				           sequence.get(i).print();
 				       }
@@ -155,6 +222,11 @@ public class UI {
 				       System.out.println("Number of states visited: " + search.get_num_boards_visited());
 				       System.out.println("Number of moves: " + sequence.size());
 				       System.out.println("Time needed: " + search.get_time()/1000F + " seconds");
+				       grid.setBoard(sequence.get(0).get_board());
+				       btnNextStep.setEnabled(true);
+				       step = 0;
+				       
+				       
 				}
 			}
 		});
@@ -192,6 +264,7 @@ public class UI {
 		btnHuman.setBounds(538, 32, 109, 28);
 		frame.getContentPane().add(btnHuman);
 		
+	
 		
 		
 		System.setOut( out );
