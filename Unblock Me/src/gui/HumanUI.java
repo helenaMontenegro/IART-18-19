@@ -30,6 +30,8 @@ public class HumanUI {
 	private JTextField textField;
 	private boolean dirChoice = false;
 	private int block = 0;
+	private ArrayList<Board> sequence;
+	private int step = 0;
 
 	/**
 	 * Launch the application.
@@ -61,7 +63,7 @@ public class HumanUI {
 	 */
 	private void initialize() {
 		frame = new JFrame("Human Mode");
-		frame.setBounds(100, 100, 702, 515);
+		frame.setBounds(100, 100, 702, 692);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -70,7 +72,14 @@ public class HumanUI {
 		frame.getContentPane().add(textFile);
 		textFile.setColumns(10);
 		
-		
+
+		 Grid grid = new Grid();
+		 grid.setLocation(45, 442);
+
+        frame.getContentPane().add(grid);
+        grid.setSize(280,200);
+        
+        
 		JButton btnLoadFile = new JButton("Load");
 		btnLoadFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -80,6 +89,9 @@ public class HumanUI {
 			        System.out.println("Loaded file.");
 					board = new Board(ini_board, null, 0, 0, "a_star");
 			    	board.print_for_human();
+			    	
+			    	 grid.setBoard(ini_board);
+				      grid.repaint();
 				} catch (FileNotFoundException e) {
 					System.out.println("File not found.");
 				}
@@ -154,6 +166,7 @@ public class HumanUI {
     			btnUpButton.setEnabled(false);
     			btnRight.setEnabled(false);
     			btnLeft.setEnabled(false);
+    			grid.setBoard(board.get_board());
 		    	if(board.is_final())
 		    		System.out.println("You win!");
 			}
@@ -168,6 +181,7 @@ public class HumanUI {
     			btnUpButton.setEnabled(false);
     			btnRight.setEnabled(false);
     			btnLeft.setEnabled(false);
+    			grid.setBoard(board.get_board());
 		    	if(board.is_final())
 		    		System.out.println("You win!");
 			}
@@ -182,6 +196,7 @@ public class HumanUI {
     			btnUpButton.setEnabled(false);
     			btnRight.setEnabled(false);
     			btnLeft.setEnabled(false);
+    			grid.setBoard(board.get_board());
 		    	if(board.is_final())
 		    		System.out.println("You win!");
 		    		
@@ -197,6 +212,7 @@ public class HumanUI {
     			btnUpButton.setEnabled(false);
     			btnRight.setEnabled(false);
     			btnLeft.setEnabled(false);
+    			grid.setBoard(board.get_board());
 		    	
 		    	if(board.is_final())
 		    		System.out.println("You win!");
@@ -281,11 +297,64 @@ public class HumanUI {
 			    	}
 			    	board = board.generate_specific_successor(block, direction);
 			    	board.print_for_human();
+			    	grid.setBoard(board.get_board());
 			    	if(board.is_final())
 			    		System.out.println("You win!");
 			    	
 			}
 		});
+		
+		JButton btnNextStep = new JButton("Next");
+		JButton btnPrevStep = new JButton("Previous");
+		btnPrevStep.setEnabled(false);
+		btnPrevStep.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				try {	
+				step--;
+				grid.setBoard(sequence.get(step).get_board());
+				
+				if(step == 0) {
+					btnPrevStep.setEnabled(false);
+				}
+				if(step < sequence.size()) {
+					btnNextStep.setEnabled(true);
+				}
+				}
+				catch(Exception e) {
+					System.out.println("Invalid Operation");
+				}
+				
+			}
+		});
+		btnPrevStep.setBounds(334, 470, 96, 23);
+		frame.getContentPane().add(btnPrevStep);
+		
+		btnNextStep.setEnabled(false);
+		btnNextStep.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				try {	
+				grid.setBoard(sequence.get(step).get_board());
+				step++;
+			
+				
+				if(step >= sequence.size()) {
+					btnNextStep.setEnabled(false);
+				}
+				if(step > 0) {
+					btnPrevStep.setEnabled(true);
+				}
+				}
+				catch(Exception e) {
+					System.out.println("Board was finished");
+				}
+				
+			}
+		});
+		btnNextStep.setBounds(334, 524, 96, 23);
+		frame.getContentPane().add(btnNextStep);
+		
 		btnBlock.setBounds(548, 174, 89, 23);
 		frame.getContentPane().add(btnBlock);
 		
