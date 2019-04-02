@@ -5,11 +5,25 @@ import logic.Search;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * Class for the iterative deepening search algorithm.
+ */
 public class IterativeDeepeningSearch extends Search {
+	/**
+	 * Constructor of the class.
+	 * @param initial_board
+	 */
 	public IterativeDeepeningSearch(Board initial_board) {
 		super(initial_board);
 	}
 	
+	/**
+	 * Function that runs the algorithm which expands the first element of the boards to expand and, if it doesn't
+	 * find the solution, saves the expansions at the beginning of the list of boards to expand. If the first element
+	 * has a bigger depth than the one set as limit it doesn't expand it. The limits of depth are incremented until a
+	 * final board is found or to the maximum of 100.
+	 * It ignores the first element of the list if it has already been explored with inferior depth.
+	 */
 	public Board run() {
 		long start = System.currentTimeMillis();
 		int min_depth = 10, max_depth = 100;

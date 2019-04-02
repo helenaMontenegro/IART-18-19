@@ -10,10 +10,17 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Arrays;
-
+/**
+ * Main class, responsible for running the program in the console.
+ * @param ini_board - holds the initial board which is asked from the user one the program starts.
+ */
 public class Main {
     private static int[][] ini_board;
 
+    /**
+     * Function that runs the program on the console.
+     * @param args
+     */
     public static void main(String[] args) {
 
     	while(true)
@@ -33,7 +40,11 @@ public class Main {
     	}        
     }
 
-
+    /**
+     * Function that shows the initial menu of the program, where the user chooses if he wants to play the game or run 
+     * a search algorithm.
+     * @param ini_board - initial board.
+     */
     public static void mainMenu(int[][] ini_board) {
         System.out.println("-----------------");
         System.out.println("|   Unblock Me  |");
@@ -60,6 +71,12 @@ public class Main {
 
     }
 
+    /**
+     * Function that receives an input from the user between min and max and returns it.
+     * @param min - minimum value
+     * @param max - maximum value
+     * @return user input
+     */
     private static int getOption(int min, int max) {
         int option = 0;
         do {
@@ -77,7 +94,11 @@ public class Main {
         } while (option < min || option > max);
         return option;
     }
-
+    /**
+     * Function that reads the initial board from a file.
+     * @param file_reader
+     * @return initial board
+     */
     public static int[][] parseBoard(FileReader file_reader){
         BufferedReader reader; 
         String next_element;
@@ -104,6 +125,10 @@ public class Main {
         return board;
     }
     
+    /**
+     * Function that allows the user to play the game and ask for hints.
+     * @param ini_board - initial board
+     */
     private static void humanMenu(int[][] ini_board) {
     	Board board = new Board(ini_board, null, 0, 0, "a_star");
     	board.print_for_human();
@@ -154,7 +179,11 @@ public class Main {
     	
     }
 
-
+    /**
+     * Function that asks the user for which search algorithm to use to find the solution to the game and that runs it,
+     * showing it in the console.
+     * @param ini_board - initial board
+     */
     private static void searchMenu(int[][] ini_board) {
         System.out.println("------------------------------");
         System.out.println("|   Unblock Me               |");

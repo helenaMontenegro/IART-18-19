@@ -5,13 +5,23 @@ import logic.Search;
 
 import java.util.ArrayList;
 
+/**
+ * Class for the depth first search algorithm.
+ */
 public class DFS extends Search {
 
-
+	/**
+	 * Constructor of the class.
+	 * @param initial_board
+	 */
 	public DFS(Board initial_board) {
 	super(initial_board);
 	}
-	
+	/**
+	 * Function that runs the algorithm which expands the first element of the boards to expand and, if it doesn't
+	 * find the solution, saves the expansions at the beginning of the list of boards to expand. It ignores the first element
+	 * of the list if it has alredy been explored.
+	 */
 	public Board run() {
 		long start = System.currentTimeMillis();
 		while(!boards_to_expand.isEmpty()) {

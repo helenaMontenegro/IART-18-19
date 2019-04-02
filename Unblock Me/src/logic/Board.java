@@ -2,6 +2,11 @@ package logic;
 
 import java.util.ArrayList;
 
+/**
+ * Class Board which defines the state of a board.
+ * Contains the board, the board that originates this one (parent), a list of the blocks the board contains, the functions
+ * used in the algorithms of informed search (h and g), the type of search (search), the depth of the board and its successors. 
+ */
 public class Board implements Comparable<Board> {
 	int[][] board;
 	Board parent;
@@ -12,16 +17,42 @@ public class Board implements Comparable<Board> {
 	int depth;
 	ArrayList<Board> successors;
 
-	Board(int[][] board, Board parent_board, int h, int g, String search, int depth) {
+	/**
+	 * Constructor of the board that takes into account its depth.
+	 * @param board
+	 * @param parent_board
+	 * @param h
+	 * @param g
+	 * @param search
+	 * @param depth
+	 */
+	public Board(int[][] board, Board parent_board, int h, int g, String search, int depth) {
 		this.build_board(board, parent_board, h, g, search);
 		this.depth = depth;
 	}
 	
+	/**
+	 * Constructor of the board that doesn't take into account its depth, setting it as 0.
+	 * @param board
+	 * @param parent_board
+	 * @param h
+	 * @param g
+	 * @param search
+	 * @param depth
+	 */
 	public Board(int[][] board, Board parent_board, int h, int g, String search) {
 		this.build_board(board, parent_board, h, g, search);
 		this.depth = 0;
 	}
 	
+	/**
+	 * Function that builds the board, which is called by the constructors.
+	 * @param board
+	 * @param parent_board
+	 * @param h
+	 * @param g
+	 * @param search
+	 */
 	private void build_board(int[][] board, Board parent_board, int h, int g, String search) {
 		this.board = board;
 		this.blocks = new ArrayList<>();
@@ -32,6 +63,10 @@ public class Board implements Comparable<Board> {
 		this.build_blocks();
 	}
 
+	/**
+	 * Function that expands the board if it's not already expanded.
+	 * @return list of expansions
+	 */
 	public ArrayList<Board> generate_successors() {
 		if(this.successors != null) {
 			return this.successors;
@@ -78,6 +113,13 @@ public class Board implements Comparable<Board> {
 		return this.successors;
 	}
 	
+	/**
+	 * Function that generates the expansion of the board originating from moving the block received as arguments in the 
+	 * direction also received as argument.
+	 * @param block_id - id of the block to move
+	 * @param direction - direction in which the block should move
+	 * @return the resulting expansion
+	 */
 	public Board generate_specific_successor(int block_id, int direction) {
 		Board new_board = null;
 		System.out.println(block_id);
@@ -107,6 +149,9 @@ public class Board implements Comparable<Board> {
 		return new_board;
 	}
 
+	/**
+	 * Function that analysis the board and builds the existing blocks, putting them in the list of blocks.
+	 */
 	public void build_blocks() {
 		boolean found = false;
 
@@ -142,8 +187,9 @@ public class Board implements Comparable<Board> {
 	
 	/**
 	 * This function calculates the distance to the final board, taking into consideration the 
-	 * distance between block 1 and the exit and the number of blocks blocking its way.
-	 * @param board
+	 * distance between block 1 and the exit and the number of blocks blocking its way. The heuristics available
+	 * are the distance of the main block to the exit, the number of blocks blocking the exit, and the sum of both of these.
+	 * @param board - board to which the h function is being calculated
 	 * @return
 	 */
 	public int calculate_h(int[][] board) {
@@ -168,6 +214,10 @@ public class Board implements Comparable<Board> {
 		return num_blocks + distance_to_exit;
 	}
 	
+	/**
+	 * Function that checks if the objective is met.
+	 * @return true if the board is final or false otherwise
+	 */
 	public Boolean is_final() {
 		if(this.board[3][6] == 1) {
 			return true;
@@ -175,23 +225,43 @@ public class Board implements Comparable<Board> {
 		return false;
 	}
 	
+	/**
+	 * Function that returns this board's parent.
+	 * @return parent
+	 */
 	public Board get_parent() {
 		return this.parent;
 	}
 	
+	/**
+	 * Function that sets this board's parent.
+	 * @param parent
+	 */
 	public void set_parent(Board parent) {
 		this.parent = parent;
 		this.set_depth();
 	}
 	
+	/**
+	 * Function that returns function that defines distance to initial board;
+	 * @return
+	 */
 	public int get_g() {
 		return this.g;
 	}
 	
+	/**
+	 * Function that returns function that defines distance to final board;
+	 * @return
+	 */
 	public int get_h() {
 		return this.h;
 	}
 	
+	/**
+	 * Function that allows to make a copy of a board, returning it.
+	 * @return board
+	 */
 	public int[][] copy_board() {
 		int[][] new_array = new int[8][8];
 		for(int i = 0; i < this.board.length; i++) {
@@ -202,10 +272,17 @@ public class Board implements Comparable<Board> {
 		return new_array;
 	}
 	
+	/**
+	 * Function to get the Board's blocks.
+	 * @return
+	 */
 	public ArrayList<Block> get_blocks() {
 		return this.blocks;
 	}
 	
+	/**
+	 * Function that prints the board for the human interface.
+	 */
 	public void print_for_human() {
 		for (int i = 0; i < this.board.length; i++) {
 			for (int j = 0; j < this.board[i].length; j++) {
@@ -254,6 +331,9 @@ public class Board implements Comparable<Board> {
 		}
 	}
 	
+	/**
+	 * Function that prints the board.
+	 */
 	public void print() {
 		for (int i = 0; i < this.board.length; i++) {
 			for (int j = 0; j < this.board[i].length; j++) {
@@ -281,10 +361,19 @@ public class Board implements Comparable<Board> {
 		}
 	}
 	
+	/**
+	 * Function that returns the board.
+	 * @return
+	 */
 	public int[][] get_board() {
 		return this.board;
 	}
 	
+	/**
+	 * Function that allows to check if the two boards are equal to one another.
+	 * @param b - the board with which this board will be compared.
+	 * @return
+	 */
 	public boolean compare_board(Board b) {
 		int[][] board_to_compare = b.get_board();
 		for(int i = 0; i < this.board.length; i++) {
@@ -296,10 +385,17 @@ public class Board implements Comparable<Board> {
 		return true;
 	}
 	
+	/**
+	 * Function to get the board's depth.
+	 * @return
+	 */
 	public int get_depth() {
 		return this.depth;
 	}
 	
+	/**
+	 * Function to set the board's depth according to the parent's depth.
+	 */
 	public void set_depth() {
 		if(parent == null)
 			this.depth = 0;
@@ -307,14 +403,28 @@ public class Board implements Comparable<Board> {
 			this.depth = this.parent.get_depth()+1;
 	}
 	
+	/**
+	 * Function that returns the board's expansions.
+	 * @return
+	 */
 	public ArrayList<Board> get_successors() {
 		return successors;
 	}
 	
+	/**
+	 * Function that sets the board's expansions.
+	 * @param successors
+	 */
 	public void set_successors(ArrayList<Board> successors) {
 		this.successors = successors;
 	}
 	
+	/**
+	 * Function that checks if a block can move and where to.
+	 * @param block_id
+	 * @return array of boolean in which the first element defines if the block can go backwards, the second element defines
+	 * whether the clock can move forward and the last element defines if the block moves in an horizontal direction.
+	 */
 	public boolean[] can_block_move(int block_id) {
 		boolean[] can_move = new boolean[3];
 		can_move[0] = false; //can move to place before?
@@ -343,6 +453,11 @@ public class Board implements Comparable<Board> {
 		return can_move;
 	}
 	
+	/**
+	 * Function that compares two Boards to check which block moved from one to another.
+	 * @param b - board with which to compare
+	 * @return int array that holds in the first position the block that moved and in the second the direction in which it moved
+	 */
 	public int[] check_moved_block(Board b) {
 		boolean move_to_after = false, found = false;
 		int[] block_dir = new int[2]; //block_dir[0] -> block number; block_dir[1] -> block direction (0 - left, 1 - right, 2 - up, 3 - down)
@@ -382,6 +497,10 @@ public class Board implements Comparable<Board> {
 		return block_dir;
 	}
 	
+	/**
+	 * Function that compares the boards according to the functions g and h used in the A* and Greedy algorithms and
+	 * according to their depths in the case of the iterative deepening algorithm.
+	 */
 	@Override
     public int compareTo(Board b) {
 		if(this.search.equals("a_star") || this.search.equals("a_star_1") || this.search.equals("a_star_2"))

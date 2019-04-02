@@ -3,12 +3,23 @@ package logic;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * Class for the a star search algorithm.
+ */
 public class AStarSearch extends Search {
-
+	/**
+	 * Constructor of the class.
+	 * @param initial_board
+	 */
 	public AStarSearch(Board initial_board) {
 		super(initial_board);
 	}
 	
+	/**
+	 * Function that runs the algorithm which expands the first element of the boards to expand and, if it doesn't
+	 * find the solution, saves the expansions in the list of boards to expand, ordering it according to the h and g functions
+	 * that are in the board. It ignores the first element of the list if it has alredy been explored.
+	 */
 	public Board run() {
 		long start = System.currentTimeMillis();
 		while(!boards_to_expand.isEmpty()) {
