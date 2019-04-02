@@ -133,7 +133,7 @@ public class UI {
 						board = new Board(ini_board, null, 0, 0, "");
 						search = new IterativeDeepeningSearch(board);
 					}
-					else if(rdbtnAstar.isSelected()) {
+					else if(rdbtnAstar2.isSelected()) {
 						board = new Board(ini_board, null, 0, 0, "a_star_2");
 						search = new AStarSearch(board);
 					}
