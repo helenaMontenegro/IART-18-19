@@ -161,6 +161,10 @@ public class Board implements Comparable<Board> {
 			else if(found_block && board[3][i] != 1 && board[3][i] != -1)
 				distance_to_exit++;
 		}
+		if(this.search.equals("a_star_1"))
+			return distance_to_exit;
+		if(this.search.equals("a_star_2"))
+			return num_blocks;
 		return num_blocks + distance_to_exit;
 	}
 	
@@ -380,7 +384,7 @@ public class Board implements Comparable<Board> {
 	
 	@Override
     public int compareTo(Board b) {
-		if(this.search.equals("a_star"))
+		if(this.search.equals("a_star") || this.search.equals("a_star_1") || this.search.equals("a_star_2"))
 			return (this.g+this.h)-(b.get_g()+b.get_h());
 		else if(this.search.equals("greedy"))
 			return this.h-b.get_h();

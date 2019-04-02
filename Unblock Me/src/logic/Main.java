@@ -192,7 +192,20 @@ public class Main {
                 search = new GreedySearch(board);
                 break;
             case 5:
-                type_of_search = "a_star";
+            	System.out.println("------------------------------");
+                System.out.println("|   Choose heuristic:        |");
+                System.out.println("|                            |");
+                System.out.println("|   1-Distance to exit       |");
+                System.out.println("|   2-Blocks blocking exit   |");
+                System.out.println("|   3-Both                   |");
+                System.out.println("|                            |");
+                System.out.println("------------------------------");
+            	option = getOption(1, 3);
+            	switch(option) {
+            	case 1: type_of_search = "a_star_1"; break;
+            	case 2: type_of_search = "a_star_2"; break;
+            	case 3: type_of_search = "a_star"; break;
+            	}
                 board = new Board(ini_board, null, 0, 0, type_of_search);
                 search = new AStarSearch(board);
                 break;
