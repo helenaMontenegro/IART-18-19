@@ -83,31 +83,39 @@ public class UI {
 		frame.getContentPane().add(btnLoadFile);
 		
 		JRadioButton rdbtnBFS = new JRadioButton("BFS");
-		rdbtnBFS.setBounds(538, 109, 109, 23);
+		rdbtnBFS.setBounds(538, 107, 109, 23);
 		frame.getContentPane().add(rdbtnBFS);
 		
 		JRadioButton rdbtnDFS = new JRadioButton("DFS");
-		rdbtnDFS.setBounds(538, 151, 109, 23);
+		rdbtnDFS.setBounds(538, 133, 109, 23);
 		frame.getContentPane().add(rdbtnDFS);
 		
-		JRadioButton rdbtnAstar = new JRadioButton("A*");
-		rdbtnAstar.setBounds(538, 195, 109, 23);
+		JRadioButton rdbtnAstar = new JRadioButton("A*(1)");
+		rdbtnAstar.setBounds(538, 159, 109, 23);
 		frame.getContentPane().add(rdbtnAstar);
 		
 		JRadioButton rdbtnIterativeDeepening = new JRadioButton("Iterative Deepening");
-		rdbtnIterativeDeepening.setBounds(538, 237, 142, 23);
+		rdbtnIterativeDeepening.setBounds(538, 238, 142, 23);
 		frame.getContentPane().add(rdbtnIterativeDeepening);
 		
 		JRadioButton rdbtnGreedy = new JRadioButton("Greedy");
-		rdbtnGreedy.setBounds(538, 280, 109, 23);
+		rdbtnGreedy.setBounds(538, 264, 109, 23);
 		frame.getContentPane().add(rdbtnGreedy);
+		
+		JRadioButton rdbtnAstar2 = new JRadioButton("A*(2)");
+		rdbtnAstar2.setBounds(538, 186, 109, 23);
+		frame.getContentPane().add(rdbtnAstar2);
+		
+		JRadioButton rdbtnAstarBoth = new JRadioButton("A*(both)");
+		rdbtnAstarBoth.setBounds(538, 212, 109, 23);
+		frame.getContentPane().add(rdbtnAstarBoth);
 		
 		JButton btnNewButton_1 = new JButton("Solve");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(ini_board != null) {
 					if(rdbtnAstar.isSelected()) {
-						board = new Board(ini_board, null, 0, 0, "a_star");
+						board = new Board(ini_board, null, 0, 0, "a_star_1");
 						search = new AStarSearch(board);
 					} else if(rdbtnBFS.isSelected()) {
 						board = new Board(ini_board, null, 0, 0, "");
@@ -124,6 +132,14 @@ public class UI {
 					else if(rdbtnIterativeDeepening.isSelected()) {
 						board = new Board(ini_board, null, 0, 0, "");
 						search = new IterativeDeepeningSearch(board);
+					}
+					else if(rdbtnAstar.isSelected()) {
+						board = new Board(ini_board, null, 0, 0, "a_star_2");
+						search = new AStarSearch(board);
+					}
+					else if(rdbtnAstarBoth.isSelected()) {
+						board = new Board(ini_board, null, 0, 0, "a_star");
+						search = new AStarSearch(board);
 					}
 					
 					Board final_board = search.run();
@@ -151,6 +167,8 @@ public class UI {
 		group.add(rdbtnDFS);
 		group.add(rdbtnIterativeDeepening);
 		group.add(rdbtnGreedy);
+		group.add(rdbtnAstar2);
+		group.add(rdbtnAstarBoth);
 		
 		JTextArea textOutput = new JTextArea();
 		textOutput.setFont(new Font("Courier New", Font.PLAIN, 13));
@@ -173,6 +191,9 @@ public class UI {
 		});
 		btnHuman.setBounds(538, 32, 109, 28);
 		frame.getContentPane().add(btnHuman);
+		
+		
+		
 		System.setOut( out );
 		System.setErr( out );
 		
