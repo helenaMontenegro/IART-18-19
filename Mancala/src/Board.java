@@ -129,9 +129,17 @@ public class Board {
 	}
 	/*********************Possible Minimax Functions************************/
 	
-	private ArrayList<Board> generate_successors() {
+	public ArrayList<Board> generate_successors() {
+		if(this.num_levels == 0)
+			return null;
 		ArrayList<Board> successors = new ArrayList<Board>();
-		//TODO (use movement() function)
+		for(int i = 0; i < 5; i++) {
+			Board new_board = this.movement(i);
+			new_board.print();
+			System.out.println("----------");
+			new_board.generate_successors();
+			successors.add(new_board);
+		}
 		return successors;
 	}
 	
