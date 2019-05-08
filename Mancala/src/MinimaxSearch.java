@@ -3,16 +3,18 @@ public class MinimaxSearch {
 	private int depth;
 	private Board board;
 	
-	public MinimaxSearch(int depth, Board board) {
-		this.depth = depth;
+	public MinimaxSearch(Board board, int depth) {
 		this.board = board;
+		this.depth = depth;
+		this.board = this.run();
 	}
 	
-	/*public Board run() {
+	public Board run() {
 		Board next_board;
 		this.board.generate_successors();
-		this.board.calculate_value();
+		next_board = this.board.get_best_board();
+		next_board.print();
 		
 		return next_board;
-	}*/
+	}
 }

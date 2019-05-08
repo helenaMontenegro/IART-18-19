@@ -17,6 +17,7 @@ public class Board {
     private int num_levels;
     private int players_turn;
     private String minimax_keyword;
+    ArrayList<Board> successors;
 
     /**
      * @param board
@@ -29,6 +30,9 @@ public class Board {
         this.minimax_keyword = keyword;
     }
 
+    public void set_num_levels(int num_levels) {
+    	this.num_levels = num_levels;
+    }
     public int[][] get_board() {
 
         return board;
@@ -158,21 +162,47 @@ public class Board {
 
     /*********************Possible Minimax Functions************************/
 
-    public ArrayList<Board> generate_successors() {
+    public void generate_successors() {
 		if(this.num_levels == 0)
-			return null;
-		ArrayList<Board> successors = new ArrayList<Board>();
+			return;
+		this.successors = new ArrayList<Board>();
 		for(int i = 0; i < 5; i++) {
 			Board new_board = this.movement(i);
-			new_board.print();
 			new_board.generate_successors();
-			successors.add(new_board);
+			this.successors.add(new_board);
 		}
-		return successors;
 	}
+    
+    public Board get_best_board() {
+    	if(this.num_levels>=1) {
+    		Board best_board = this.successors.get(0);
+    		if(this.num_levels == 1)
+    			best_board.calculate_value();
+    		else
+    			best_board.get_best_board();
+    		int v = best_board.get_value();
+    		for(int i = 1; i < this.successors.size(); i++) {
+    			if(this.board[this.players_turn-1][i] == 0) {
+    				continue;
+    			}
+    			if(this.num_levels == 1)
+    				this.successors.get(i).calculate_value();
+    			else
+    				this.successors.get(i).get_best_board();
+    			if((this.minimax_keyword.equals("MAX") && this.successors.get(i).get_value() > v)
+    					||(this.minimax_keyword.equals("MIN") && this.successors.get(i).get_value() < v)) {
+    				v = this.successors.get(i).get_value();
+    				best_board = this.successors.get(i);
+    			}
+    		}
+    		this.value = v;
+    		return best_board;
+    	}
+    	return null;
+    }
 
     // evaluation function: number of game pieces in player area
-    private void calculate_value() {
+    public void calculate_value() {
         if (players_turn == 1) //player 1
         {
             value = mancala[0] + sum_board(0);
