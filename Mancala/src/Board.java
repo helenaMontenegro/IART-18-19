@@ -117,7 +117,7 @@ public class Board {
 
                         if (to_distribute == 0) {
                             new_b.set_players_turn(this.players_turn);
-                            new_b.set_keyword("MAX");
+                            new_b.set_keyword(this.minimax_keyword);
                         }
                     }
                     cell--;
@@ -151,7 +151,7 @@ public class Board {
 
                         if (to_distribute == 0) {
                             new_b.set_players_turn(this.players_turn);
-                            new_b.set_keyword("MAX");
+                            new_b.set_keyword(this.minimax_keyword);
                         }
                     }
 
