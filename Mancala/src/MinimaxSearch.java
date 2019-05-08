@@ -14,6 +14,7 @@ public class MinimaxSearch {
 		this.board.set_successors(null);
 		this.board.set_keyword("MAX");
 		this.board.set_value(-1);
+		this.board.set_playing(this.board.get_players_turn());
 	}
 	
 	public Board run() {

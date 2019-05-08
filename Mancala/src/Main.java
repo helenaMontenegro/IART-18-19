@@ -2,7 +2,7 @@
 public class Main {
 
 	public static void main(String[] args) {
-		Board board = new Board(new int[][] {{4,4,4,4,4,4},{4,4,4,4,4,4}}, 4, 1, "MAX");
+		Board board = new Board(new int[][] {{4,4,4,4,4,4},{4,4,4,4,4,4}}, 7, 1, "MAX", 1);
 		board.print();
 		MinimaxSearch m = new MinimaxSearch(board);
 		while(!board.is_final()) {

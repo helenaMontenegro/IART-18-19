@@ -16,17 +16,19 @@ public class Board {
     private int value;
     private int num_levels;
     private int players_turn;
+    private int playing;
     private String minimax_keyword;
     public ArrayList<Board> successors;
 
     /**
      * @param board
      */
-    Board(int[][] board, int num_levels, int players_turn, String keyword) {
+    Board(int[][] board, int num_levels, int players_turn, String keyword, int playing) {
         this.num_levels = num_levels;
         this.players_turn = players_turn;
         this.board = board;
         this.mancala = new int[]{0, 0};
+        this.playing = playing;
         this.minimax_keyword = keyword;
     }
 
@@ -45,6 +47,14 @@ public class Board {
     
     public void set_value(int v) {
     	this.value = v;
+    }
+    
+    public void set_playing(int playing) {
+    	this.playing = playing;
+    }
+    
+    public int get_players_turn() {
+    	return this.players_turn;
     }
     
     public void set_keyword(String key) {
@@ -88,7 +98,7 @@ public class Board {
         if (this.minimax_keyword.equals("MAX"))
             keyword = "MIN";
 
-        Board new_b = new Board(new_board, this.num_levels - 1, next_player, keyword);
+        Board new_b = new Board(new_board, this.num_levels - 1, next_player, keyword, playing);
         new_b.set_mancala(this.mancala[0], this.mancala[1]);
         new_board[player_area][cell] = 0;
 
@@ -185,7 +195,7 @@ public class Board {
         this.mancala[player - 1] += num;
     }
 
-    /*********************Possible Minimax Functions************************/
+    /*********************Minimax Functions************************/
 
     public void generate_successors() {
 		if(this.num_levels == 0)
@@ -230,13 +240,13 @@ public class Board {
     // evaluation function: number of game pieces in player area
     public void calculate_value() {
         value = 0;
-        if (players_turn == 1) //player 1
+        if (playing == 1) //player 1
         {
             if(this.is_final()) value = 100;
             value = mancala[0] + sum_board(0);
 
         } else {
-            if(this.is_final()) value = 100;
+        	if(this.is_final()) value = 100;
             value = mancala[1] + sum_board(1);
         }
     }
@@ -252,9 +262,7 @@ public class Board {
         return sum;
     }
 
-
-
-    /*****************End of Possible Minimax Functions*********************/
+    /*****************End of Minimax Functions*********************/
 
     private int[][] copy(int[][] b) {
         int[][] new_board = new int[2][6];
