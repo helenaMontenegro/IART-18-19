@@ -12,12 +12,12 @@ import java.util.ArrayList;
  */
 public class Board {
     private int[][] board;
-    private int[] mancala;
+    public int[] mancala;
     private int value;
     private int num_levels;
     private int players_turn;
     private String minimax_keyword;
-    ArrayList<Board> successors;
+    public ArrayList<Board> successors;
 
     /**
      * @param board
@@ -32,6 +32,11 @@ public class Board {
 
     public void set_num_levels(int num_levels) {
     	this.num_levels = num_levels;
+    }
+    
+    public void set_mancala(int m0, int m1) {
+    	this.mancala[0] = m0;
+    	this.mancala[1] = m1;
     }
     
     public void set_successors(ArrayList<Board> s) {
@@ -84,6 +89,7 @@ public class Board {
             keyword = "MIN";
 
         Board new_b = new Board(new_board, this.num_levels - 1, next_player, keyword);
+        new_b.set_mancala(this.mancala[0], this.mancala[1]);
         new_board[player_area][cell] = 0;
 
         while (to_distribute > 0) {
@@ -111,6 +117,7 @@ public class Board {
 
                         if (to_distribute == 0) {
                             new_b.set_players_turn(this.players_turn);
+                            new_b.set_keyword("MAX");
                         }
                     }
                     cell--;
@@ -144,6 +151,7 @@ public class Board {
 
                         if (to_distribute == 0) {
                             new_b.set_players_turn(this.players_turn);
+                            new_b.set_keyword("MAX");
                         }
                     }
 
@@ -183,7 +191,7 @@ public class Board {
 		if(this.num_levels == 0)
 			return;
 		this.successors = new ArrayList<Board>();
-		for(int i = 0; i < 5; i++) {
+		for(int i = 0; i < 6; i++) {
 			Board new_board = this.movement(i);
 			new_board.generate_successors();
 			this.successors.add(new_board);
@@ -192,20 +200,21 @@ public class Board {
     
     public Board get_best_board() {
     	if(this.num_levels>=1) {
-    		Board best_board = this.successors.get(0);
-    		if(this.num_levels == 1)
-    			best_board.calculate_value();
-    		else
-    			best_board.get_best_board();
-    		int v = best_board.get_value();
-    		for(int i = 1; i < this.successors.size(); i++) {
+    		Board best_board = null;
+    		int v = -1;
+    		for(int i = 0; i < this.successors.size(); i++) {
     			if(this.board[this.players_turn-1][i] == 0) {
     				continue;
     			}
+    			if(best_board == null)
+    				best_board = this.successors.get(i);
     			if(this.num_levels == 1)
     				this.successors.get(i).calculate_value();
     			else
     				this.successors.get(i).get_best_board();
+    			if(v == -1) {
+    				v = best_board.get_value();
+    			}
     			if((this.minimax_keyword.equals("MAX") && this.successors.get(i).get_value() > v)
     					||(this.minimax_keyword.equals("MIN") && this.successors.get(i).get_value() < v)) {
     				v = this.successors.get(i).get_value();
