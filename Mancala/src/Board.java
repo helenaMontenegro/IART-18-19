@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 /**
- * Class Board.
+ * Class Board
  *
  * @param board - the board of the game.
  * @param mancala - the player's respective mancalas.
@@ -203,10 +203,16 @@ public class Board {
 
     // evaluation function: number of game pieces in player area
     public void calculate_value() {
+        value = 0;
         if (players_turn == 1) //player 1
         {
+            if(this.is_final()) value = 100;
             value = mancala[0] + sum_board(0);
-        } else value = mancala[1] + sum_board(1);
+
+        } else {
+            if(this.is_final()) value = 100;
+            value = mancala[1] + sum_board(1);
+        }
     }
 
     // sum of player pieces
