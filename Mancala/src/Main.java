@@ -3,14 +3,14 @@ public class Main {
 
 	public static void main(String[] args) {
 		Main m = new Main();
-		m.pcVSpc(2, 1);
+		m.pcVSpc(3, 1);
 	}
 	
 	public int get_depth(int difficulty) {
 		if(difficulty == 1)
-			return 3;
+			return 1;
 		if(difficulty == 2)
-			return 5;
+			return 4;
 		return 7;
 	}
 	
@@ -26,6 +26,7 @@ public class Main {
 			minimax.set_board(board);
 			board.print();
 		}
+		board.set_final(); //updates mancala with the end of game
 		board.print_result();				
 	}
 }

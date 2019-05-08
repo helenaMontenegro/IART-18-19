@@ -9,6 +9,8 @@ import java.util.ArrayList;
  * @param num_levels - number of levels to be checked by the algorithm.
  * @param players_turn - the player that performs the next movement.
  * @param minimax_keyword - used to calculate value for minimax algorithm.
+ * @param playing - player currently playing, used to calculate value in regards to the player of the original board
+ * and not to the player's turn during the minimax algorithm.
  */
 public class Board {
     private int[][] board;
@@ -181,14 +183,14 @@ public class Board {
                 sum[i] += this.board[i][j];
             }
         }
-        if (sum[0] == 0) {
+        if (sum[0] == 0 || sum[1] == 0)
             is_final = true;
-            this.increase_mancala(2, sum[1]);
-        } else if (sum[1] == 0) {
-            is_final = true;
-            this.increase_mancala(1, sum[0]);
-        }
         return is_final;
+    }
+    
+    public void set_final() {
+        this.increase_mancala(1, sum_board(0));
+        this.increase_mancala(2, sum_board(1));
     }
 
     public void increase_mancala(int player, int num) {
