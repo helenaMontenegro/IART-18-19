@@ -158,11 +158,18 @@ public class Board {
 
     /*********************Possible Minimax Functions************************/
 
-    private ArrayList<Board> generate_successors() {
-        ArrayList<Board> successors = new ArrayList<Board>();
-        //TODO (use movement() function)
-        return successors;
-    }
+    public ArrayList<Board> generate_successors() {
+		if(this.num_levels == 0)
+			return null;
+		ArrayList<Board> successors = new ArrayList<Board>();
+		for(int i = 0; i < 5; i++) {
+			Board new_board = this.movement(i);
+			new_board.print();
+			new_board.generate_successors();
+			successors.add(new_board);
+		}
+		return successors;
+	}
 
     // evaluation function: number of game pieces in player area
     private void calculate_value() {
