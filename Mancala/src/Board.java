@@ -33,6 +33,23 @@ public class Board {
     public void set_num_levels(int num_levels) {
     	this.num_levels = num_levels;
     }
+    
+    public void set_successors(ArrayList<Board> s) {
+    	this.successors = s;
+    }
+    
+    public void set_value(int v) {
+    	this.value = v;
+    }
+    
+    public void set_keyword(String key) {
+    	this.minimax_keyword = key;
+    }
+    
+    public int get_num_levels() {
+    	return this.num_levels;
+    }
+    
     public int[][] get_board() {
 
         return board;
