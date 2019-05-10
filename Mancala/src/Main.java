@@ -3,8 +3,7 @@ import java.util.Scanner;
 public class Main {
 
 	public static void main(String[] args) {
-		Main m = new Main();
-		m.pcVSpc(3, 1);
+		mainMenu();
 	}
 	
 	public int get_depth(int difficulty) {
@@ -12,20 +11,21 @@ public class Main {
 			return 1;
 		if(difficulty == 2)
 			return 4;
-		return 7;
+		return 8;
 	}
 	
-	public void pcVSpc(int pc1_difficulty, int pc2_difficulty) {
+	public void pcVSpc(int pc1_difficulty, int pc2_difficulty, int heuristic) {
 		int depth1 = this.get_depth(pc1_difficulty);
 		int depth2 = this.get_depth(pc2_difficulty);
 		
-		Board board = new Board(new int[][] {{4,4,4,4,4,4},{4,4,4,4,4,4}}, depth1, 1, "MAX", 1);
+		Board board = new Board(new int[][] {{4,4,4,4,4,4},{4,4,4,4,4,4}}, depth1, 1, "MAX", 1, heuristic);
 		board.print();
-		MinimaxSearch minimax = new MinimaxSearch(board, depth1, depth2);
+		MinimaxSearch minimax = new MinimaxSearch(board, depth1, depth2, true);
 		while(!board.is_final()) {
 			board = minimax.run();
 			minimax.set_board(board);
 			board.print();
+			System.out.println("Time needed: " + minimax.get_time()/1000F + " seconds.\n");
 		}
 		board.set_final(); //updates mancala with the end of game
 		board.print_result();				
@@ -35,7 +35,7 @@ public class Main {
 	 * Function that shows the initial menu of the program
 	 * @param board - initial board.
 	 */
-	public static void mainMenu(Board board) {
+	public static void mainMenu() {
 		System.out.println("---------------------------------------");
 		System.out.println("|   __  __                   _         |");
 		System.out.println("|  |  \\/  |__ _ _ _  __ __ _| |__ _    |");
@@ -53,13 +53,13 @@ public class Main {
 
 		switch (option) {
 			case 1:
-				humanMenu(board);
+				humanMenu();
 				break;
 			case 2:
-				pcMenu(board);
+				pcMenu();
 				break;
 			case 3:
-				humanPcMenu(board);
+				humanPcMenu();
 			default:
 				break;
 		}
@@ -67,7 +67,7 @@ public class Main {
 
 	}
 
-public static void pcMenu(Board board){
+public static void pcMenu(){
 
 	Main m = new Main();
 
@@ -93,15 +93,15 @@ public static void pcMenu(Board board){
 
 	int option2 = getOption(1, 3);
 
-	m.pcVSpc(option, option2);
+	m.pcVSpc(option, option2, 2); //ask heuristic
 }
 
-public static void humanMenu(Board board){
+public static void humanMenu(){
 
 
 }
 
-public static void humanPcMenu(Board board){
+public static void humanPcMenu(){
 
 	System.out.println("-------------------------------------------------------");
 	System.out.println("|                                                      |");

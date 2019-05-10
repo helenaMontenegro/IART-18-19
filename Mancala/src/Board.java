@@ -19,19 +19,22 @@ public class Board {
     private int num_levels;
     private int players_turn;
     private int playing;
+    private int heuristic;
     private String minimax_keyword;
     public ArrayList<Board> successors;
 
     /**
      * @param board
      */
-    Board(int[][] board, int num_levels, int players_turn, String keyword, int playing) {
+    Board(int[][] board, int num_levels, int players_turn, String keyword, int playing, int heuristic) {
         this.num_levels = num_levels;
         this.players_turn = players_turn;
         this.board = board;
         this.mancala = new int[]{0, 0};
         this.playing = playing;
         this.minimax_keyword = keyword;
+        this.value = -1;
+        this.heuristic = heuristic;
     }
 
     public void set_num_levels(int num_levels) {
@@ -55,12 +58,16 @@ public class Board {
     	this.playing = playing;
     }
     
-    public int get_players_turn() {
-    	return this.players_turn;
-    }
-    
     public void set_keyword(String key) {
     	this.minimax_keyword = key;
+    }
+    
+    public ArrayList<Board> get_successors() {
+    	return this.successors;
+    }
+    
+    public int get_players_turn() {
+    	return this.players_turn;
     }
     
     public int get_num_levels() {
@@ -100,7 +107,7 @@ public class Board {
         if (this.minimax_keyword.equals("MAX"))
             keyword = "MIN";
 
-        Board new_b = new Board(new_board, this.num_levels - 1, next_player, keyword, playing);
+        Board new_b = new Board(new_board, this.num_levels - 1, next_player, keyword, this.playing, this.heuristic);
         new_b.set_mancala(this.mancala[0], this.mancala[1]);
         new_board[player_area][cell] = 0;
 
@@ -200,57 +207,87 @@ public class Board {
     /*********************Minimax Functions************************/
 
     public void generate_successors() {
-		if(this.num_levels == 0)
+		if(this.num_levels == 0) {
+			this.calculate_value();
 			return;
+		}
 		this.successors = new ArrayList<Board>();
 		for(int i = 0; i < 6; i++) {
+			if(this.board[this.players_turn-1][i] == 0)
+				continue;
 			Board new_board = this.movement(i);
 			new_board.generate_successors();
 			this.successors.add(new_board);
 		}
 	}
     
-    public Board get_best_board() {
-    	if(this.num_levels>=1) {
-    		Board best_board = null;
-    		int v = -1;
-    		for(int i = 0; i < this.successors.size(); i++) {
-    			if(this.board[this.players_turn-1][i] == 0) {
-    				continue;
-    			}
-    			if(best_board == null)
-    				best_board = this.successors.get(i);
-    			if(this.num_levels == 1)
-    				this.successors.get(i).calculate_value();
-    			else
-    				this.successors.get(i).get_best_board();
-    			if(v == -1) {
-    				v = best_board.get_value();
-    			}
-    			if((this.minimax_keyword.equals("MAX") && this.successors.get(i).get_value() > v)
-    					||(this.minimax_keyword.equals("MIN") && this.successors.get(i).get_value() < v)) {
-    				v = this.successors.get(i).get_value();
-    				best_board = this.successors.get(i);
-    			}
-    		}
-    		this.value = v;
-    		return best_board;
+    public int get_best_board() {
+    	if(this.num_levels == 0 || this.is_final()) {
+    		this.calculate_value();
+    		return this.value;
     	}
-    	return null;
+    	//MAX
+    	if(this.minimax_keyword.equals("MAX")) {
+        	this.value = Integer.MIN_VALUE;
+    		for(int i = 0; i < this.successors.size(); i++) {
+    			int v = this.successors.get(i).get_best_board();
+    			if(v > this.value)
+    				this.value = v;
+    		}
+    	} else { //MIN
+	    	this.value = Integer.MAX_VALUE;
+	    	for(int i = 0; i < this.successors.size(); i++) {
+	    		int v = this.successors.get(i).get_best_board();
+	    		if(v < this.value)
+	    			this.value = v;
+	    	}
+    	}
+		return this.value;
+    }
+    
+    public int get_best_board_alpha_beta(int alpha, int beta) {
+    	if(this.num_levels == 0 || this.is_final()) {
+    		this.calculate_value();
+    		return this.value;
+    	}
+    	//alpha-beta pruning in MAX
+    	if(this.minimax_keyword.equals("MAX")) {
+    		for(int i = 0; i < this.successors.size(); i++) {
+    			int v = this.successors.get(i).get_best_board_alpha_beta(alpha, beta);
+    			if(v > alpha)
+    				alpha = v;
+    			if(alpha >= beta)
+    				break;
+    		}
+    		this.value = alpha;
+			return alpha;
+    	}
+    	//alpha-beta pruning in MIN
+    	for(int i = 0; i < this.successors.size(); i++) {
+    		int v = this.successors.get(i).get_best_board_alpha_beta(alpha, beta);
+    		if(v < beta)
+    			beta = v;
+    		if(alpha >= beta)
+    			break;
+    	}
+    	this.value = beta;
+		return beta;
     }
 
     // evaluation function: number of game pieces in player area
     public void calculate_value() {
-        value = 0;
-        if (playing == 1) //player 1
-        {
-            if(this.is_final()) value = 100;
-            value = mancala[0] + sum_board(0);
-
-        } else {
-        	if(this.is_final()) value = 100;
-            value = mancala[1] + sum_board(1);
-        }
+    	this.value = (mancala[this.playing-1] + sum_board(this.playing-1)) * 100 / 48; //para ficar uniformemente entre 0 e 100
+    	if(this.is_final() && value > 50)
+    		this.value=100;
+    	else if(this.is_final() && value < 50)
+    		this.value=0;
+    	else if(this.heuristic == 2) {
+    		int other = 1;
+    		if(this.playing == 1) {
+    			other = 2;
+    		}
+    		this.value = mancala[this.playing-1] - mancala[other-1];
+    	}
     }
 
     // sum of player pieces
