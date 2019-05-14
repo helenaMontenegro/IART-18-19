@@ -23,9 +23,6 @@ public class Board {
     private String minimax_keyword;
     public ArrayList<Board> successors;
 
-    /**
-     * @param board
-     */
     Board(int[][] board, int num_levels, int players_turn, String keyword, int playing, int heuristic) {
         this.num_levels = num_levels;
         this.players_turn = players_turn;
@@ -182,6 +179,12 @@ public class Board {
         return new_b;
     }
 
+    public boolean check_empty(int cell) {
+        if (this.board[this.players_turn-1][cell] == 0)
+            return true;
+        return false;
+    }
+
     public boolean is_final() {
         boolean is_final = false;
         int[] sum = new int[]{0, 0};
@@ -314,13 +317,17 @@ public class Board {
     }
 
     public void print() {
-        System.out.println("                             -------------------------");
+        String ident = "";
+        if(this.mancala[0] / 10 >= 1) {
+            ident = " ";
+        }
+        System.out.println(ident + "                             -------------------------");
         for (int i = 0; i < this.board.length; i++) {
             System.out.print("Player " + (i + 1) + "      ");
             if (i == 0) {
                 System.out.print("  Mancala: " + this.mancala[i] + "   | ");
             } else {
-                System.out.print("               | ");
+                System.out.print(ident + "               | ");
             }
             for (int j = 0; j < this.board[i].length; j++) {
                 System.out.print(this.board[i][j] + " | ");
@@ -328,7 +335,7 @@ public class Board {
             if (i == 1)
                 System.out.println("  Mancala: " + this.mancala[i]);
             else System.out.println();
-            System.out.println("                             -------------------------");
+            System.out.println(ident + "                             -------------------------");
         }
         System.out.println("Next player: " + this.players_turn + "\n\n");
     }
