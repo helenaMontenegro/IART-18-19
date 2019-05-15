@@ -156,7 +156,30 @@ public static void pcMenu(){
 
 	int option2 = getOption(1, 3);
 
-	m.pcVSpc(option, option2, 2, true); //ask heuristic and alfa beta
+	System.out.println("-------------------------------------------------------");
+	System.out.println("|                                                      |");
+	System.out.println("|   Please, choose a heuristic for the algorithm       |");
+	System.out.println("|     1-Number of game pieces in player area           |");
+	System.out.println("|     2-Difference between the mancalas of the players |");
+	System.out.println("|                                                      |");
+	System.out.println("-------------------------------------------------------");
+
+	int option3 = getOption(1, 2);
+
+	System.out.println("-------------------------------------------------------");
+	System.out.println("|                                                      |");
+	System.out.println("|   Please, choose a variant of the MiniMax algorithm  |");
+	System.out.println("|     1-simple                                         |");
+	System.out.println("|     2-with alpha beta pruning                        |");
+	System.out.println("|                                                      |");
+	System.out.println("-------------------------------------------------------");
+
+	int option4 = getOption(1, 2);
+	boolean pruning;
+
+	if(option4 == 2 ) pruning = true;
+	else pruning = false;
+	m.pcVSpc(option, option2, option3, pruning);
 }
 
 public static void humanPcMenu(){
