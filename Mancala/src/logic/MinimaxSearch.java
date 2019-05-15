@@ -1,3 +1,4 @@
+package logic;
 
 public class MinimaxSearch {
 	private int depth1;
