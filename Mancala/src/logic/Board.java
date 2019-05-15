@@ -24,7 +24,7 @@ public class Board {
     private String minimax_keyword;
     public ArrayList<Board> successors;
 
-    Board(int[][] board, int num_levels, int players_turn, String keyword, int playing, int heuristic) {
+    public Board(int[][] board, int num_levels, int players_turn, String keyword, int playing, int heuristic) {
         this.num_levels = num_levels;
         this.players_turn = players_turn;
         this.board = board;
