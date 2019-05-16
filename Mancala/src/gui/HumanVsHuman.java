@@ -16,9 +16,9 @@ import java.awt.event.ActionListener;
 import java.util.concurrent.TimeUnit;
 import java.awt.event.ActionEvent;
 
-public class Mancala {
+public class HumanVsHuman {
 
-	private JFrame frame;
+	JFrame frame;
 	private JTextField textField;
 	private JTextField textField_1;
 	private Board board;
@@ -47,7 +47,7 @@ public class Mancala {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Mancala window = new Mancala();
+					HumanVsHuman window = new HumanVsHuman();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -61,7 +61,7 @@ public class Mancala {
 	/**
 	 * Create the application.
 	 */
-	public Mancala() {
+	public HumanVsHuman() {
 		initialize();
 		startGame();
 		updateBoard();
@@ -75,7 +75,6 @@ public class Mancala {
 
 	private void makeMove(int option) {
 		if (!board.is_final()) {
-			if (board.get_players_turn() == 1) {
 				System.out.println("Choose a number between 1 and 6 representing the cell that you want to choose.");
 				if (board.check_empty(option - 1)) {
 					System.out.println("There are no pieces at the cell to move. Choose another one.");
@@ -85,31 +84,6 @@ public class Mancala {
 				board.print();
 				minimax.set_board(board);
 				updateBoard();
-			}
-		}
-		if (board.is_final()) {
-			board.set_final(); // updates mancala with the end of game
-			board.print_result();
-			System.out.println("\nAverage time needed for the computer's play: "
-					+ this.time_needed[1] / (long) this.number_moves[1] / 1000F + " seconds");
-		}
-	}
-
-	private void makePcMove() {
-		while (board.get_players_turn() == 2) {
-			try {
-				TimeUnit.SECONDS.sleep(1);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			int prev_player = board.get_players_turn();
-			board = minimax.run();
-			minimax.set_board(board);
-			board.print();
-			System.out.println("Time needed: " + minimax.get_time() / 1000F + " seconds.\n");
-			time_needed[prev_player - 1] += minimax.get_time();
-			number_moves[prev_player - 1]++;
-			updateBoard();
 		}
 		if (board.is_final()) {
 			board.set_final(); // updates mancala with the end of game
@@ -176,7 +150,7 @@ public class Mancala {
 		button_4.setBounds(276, 142, 42, 42);
 		frame.getContentPane().add(button_4);
 
-		JLabel lblComputer = new JLabel("Computer");
+		JLabel lblComputer = new JLabel("Player 2");
 		lblComputer.setBounds(194, 210, 46, 14);
 		frame.getContentPane().add(lblComputer);
 
