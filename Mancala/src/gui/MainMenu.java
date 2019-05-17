@@ -66,6 +66,8 @@ public class MainMenu {
 		JButton btnPcVsPc = new JButton("PC Vs PC");
 		btnPcVsPc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				PC_Configuration new_window_PC = new PC_Configuration();
+				new_window_PC.frame.setVisible(true);
 			}
 		});
 		btnPcVsPc.setBounds(140, 146, 142, 35);

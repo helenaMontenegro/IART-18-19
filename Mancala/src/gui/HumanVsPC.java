@@ -18,7 +18,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.Insets;
 
-public class HumanVsHuman {
+public class HumanVsPC {
 
 	JFrame frame;
 	private JTextField textField;
@@ -41,6 +41,7 @@ public class HumanVsHuman {
 
 	public int[] number_moves = new int[] { 0, 0 };
 	public long[] time_needed = new long[] { 0, 0 };
+	private JButton btnPcMove;
 
 	/**
 	 * Launch the application.
@@ -49,7 +50,7 @@ public class HumanVsHuman {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					HumanVsHuman window = new HumanVsHuman();
+					HumanVsPC window = new HumanVsPC(1,1,true);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -59,22 +60,53 @@ public class HumanVsHuman {
 		
 
 	}
+	
+	public int get_depth(int difficulty) {
+		if(difficulty == 1)
+			return 1;
+		if(difficulty == 2)
+			return 4;
+		return 8;
+	}
 
 	/**
 	 * Create the application.
 	 */
-	public HumanVsHuman() {
+	public HumanVsPC(int pc1_difficulty, int heuristic, boolean alpha_beta) {
 		initialize();
-		startGame();
+		startGame(pc1_difficulty,heuristic,alpha_beta);
 		updateBoard();
 	}
 
-	private void startGame() {
-		board = new Board(new int[][] { { 4, 4, 4, 4, 4, 4 }, { 4, 4, 4, 4, 4, 4 } }, 4, 1, "MAX", 1, 2);
+	private void startGame(int pc1_difficulty, int heuristic, boolean alpha_beta) {
+		int depth1 = this.get_depth(pc1_difficulty);
+		
+		board = new Board(new int[][] { { 4, 4, 4, 4, 4, 4 }, { 4, 4, 4, 4, 4, 4 } }, depth1, 1, "MAX", 1, heuristic);
 		board.print();
-		minimax = new MinimaxSearch(board, 1, 1, true);
+		minimax = new MinimaxSearch(board, depth1, depth1, alpha_beta);
 	}
 
+	private void makePcMove() {
+		int prev_player = board.get_players_turn();
+		board = minimax.run();
+		minimax.set_board(board);
+		board.print();
+		System.out.println("Time needed: " + minimax.get_time()/1000F + " seconds.\n");
+		this.time_needed[prev_player-1] += minimax.get_time();
+		this.number_moves[prev_player-1]++;
+		if(board.is_final()) {
+			board.set_final(); //updates mancala with the end of game
+			board.print_result();
+			System.out.println("\nNumber of movements needed:");
+			System.out.println("Player 1: " + this.number_moves[0]);
+			System.out.println("Player 2: " + this.number_moves[1]);
+			System.out.println("\nAverage time needed for each play:");
+			System.out.println("Player 1: " + this.time_needed[0] / (long) this.number_moves[0] /1000F + " seconds");
+			System.out.println("Player 2: " + this.time_needed[1] / (long) this.number_moves[1] /1000F + " seconds");
+			btnPcMove.setEnabled(false);
+		}
+	}
+	
 	private void makeMove(int option) {
 		if (!board.is_final()) {
 				System.out.println("Choose a number between 1 and 6 representing the cell that you want to choose.");
@@ -104,61 +136,73 @@ public class HumanVsHuman {
 		frame.getContentPane().setLayout(null);
 
 		button_5 = new JButton("4");
+		button_5.setEnabled(false);
 		button_5.setBounds(330, 142, 42, 42);
 		button_5.setMargin(new Insets(0, 0, 0, 0));
 		frame.getContentPane().add(button_5);
 
 		button_0 = new JButton("4");
+		button_0.setEnabled(false);
 		button_0.setBounds(60, 142, 42, 42);
 		button_0.setMargin(new Insets(0, 0, 0, 0));
 		frame.getContentPane().add(button_0);
 
 		button_2 = new JButton("4");
+		button_2.setEnabled(false);
 		button_2.setBounds(166, 142, 42, 42);
 		button_2.setMargin(new Insets(0, 0, 0, 0));
 		frame.getContentPane().add(button_2);
 
 		button_3 = new JButton("4");
+		button_3.setEnabled(false);
 		button_3.setBounds(221, 142, 42, 42);
 		button_3.setMargin(new Insets(0, 0, 0, 0));
 		frame.getContentPane().add(button_3);
 
 		button_6 = new JButton("5");
+		button_6.setEnabled(false);
 		button_6.setBounds(60, 63, 42, 42);
 		button_6.setMargin(new Insets(0, 0, 0, 0));
 		frame.getContentPane().add(button_6);
 
 		button_8 = new JButton("4");
+		button_8.setEnabled(false);
 		button_8.setBounds(166, 63, 42, 42);
 		button_8.setMargin(new Insets(0, 0, 0, 0));
 		frame.getContentPane().add(button_8);
 
 		button_9 = new JButton("4");
+		button_9.setEnabled(false);
 		button_9.setBounds(221, 63, 42, 42);
 		button_9.setMargin(new Insets(0, 0, 0, 0));
 		frame.getContentPane().add(button_9);
 
 		button_11 = new JButton("4");
+		button_11.setEnabled(false);
 		button_11.setBounds(330, 63, 42, 42);
 		button_11.setMargin(new Insets(0, 0, 0, 0));
 		frame.getContentPane().add(button_11);
 
 		button_7 = new JButton("4");
+		button_7.setEnabled(false);
 		button_7.setBounds(112, 63, 42, 42);
 		button_7.setMargin(new Insets(0, 0, 0, 0));
 		frame.getContentPane().add(button_7);
 
 		button_1 = new JButton("4");
+		button_1.setEnabled(false);
 		button_1.setBounds(112, 142, 42, 42);
 		button_1.setMargin(new Insets(0, 0, 0, 0));
 		frame.getContentPane().add(button_1);
 
 		button_10 = new JButton("4");
+		button_10.setEnabled(false);
 		button_10.setBounds(276, 63, 42, 42);
 		button_10.setMargin(new Insets(0, 0, 0, 0));
 		frame.getContentPane().add(button_10);
 
 		button_4 = new JButton("4");
+		button_4.setEnabled(false);
 		button_4.setBounds(276, 142, 42, 42);
 		button_4.setMargin(new Insets(0, 0, 0, 0));
 		frame.getContentPane().add(button_4);
@@ -187,45 +231,20 @@ public class HumanVsHuman {
 		textField_1.setColumns(10);
 		textField_1.setBounds(382, 63, 40, 121);
 		frame.getContentPane().add(textField_1);
+		
+		btnPcMove = new JButton("Pc Move");
+		btnPcMove.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				makePcMove();
+				updateBoard();
+			}
+		});
+		btnPcMove.setBounds(330, 206, 92, 44);
+		frame.getContentPane().add(btnPcMove);
 		addButtonListeners();
 	}
-
+	
 	private void addButtonListeners() {
-		button_0.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				makeMove(1);
-			}
-		});
-
-		button_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				makeMove(2);
-			}
-		});
-
-		button_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				makeMove(3);
-			}
-		});
-
-		button_3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				makeMove(4);
-			}
-		});
-
-		button_4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				makeMove(5);
-			}
-		});
-
-		button_5.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				makeMove(6);
-			}
-		});
 
 		button_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -265,6 +284,8 @@ public class HumanVsHuman {
 
 	}
 
+
+
 	private void updateBoard() {
 		button_0.setText(String.valueOf(board.get_board()[1][0]));
 		button_1.setText(String.valueOf(board.get_board()[1][1]));
@@ -281,6 +302,7 @@ public class HumanVsHuman {
 		textField.setText(String.valueOf(board.mancala[0]));
 		textField_1.setText(String.valueOf(board.mancala[1]));
 		if (board.get_players_turn() == 1) {
+			btnPcMove.setEnabled(false);
 			button_0.setEnabled(false);
 			button_1.setEnabled(false);
 			button_2.setEnabled(false);
@@ -294,12 +316,13 @@ public class HumanVsHuman {
 			button_10.setEnabled(true);
 			button_11.setEnabled(true);
 		} else if (board.get_players_turn() == 2) {
-			button_0.setEnabled(true);
-			button_1.setEnabled(true);
-			button_2.setEnabled(true);
-			button_3.setEnabled(true);
-			button_4.setEnabled(true);
-			button_5.setEnabled(true);
+			btnPcMove.setEnabled(true);
+			button_0.setEnabled(false);
+			button_1.setEnabled(false);
+			button_2.setEnabled(false);
+			button_3.setEnabled(false);
+			button_4.setEnabled(false);
+			button_5.setEnabled(false);
 			button_6.setEnabled(false);
 			button_7.setEnabled(false);
 			button_8.setEnabled(false);
