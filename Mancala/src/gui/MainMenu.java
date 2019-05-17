@@ -74,6 +74,12 @@ public class MainMenu {
 		frame.getContentPane().add(btnPcVsPc);
 		
 		JButton btnHumanVsPc = new JButton("Human Vs PC");
+		btnHumanVsPc.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				HumanVsPc_Config new_window_PC = new HumanVsPc_Config();
+				new_window_PC.frame.setVisible(true);
+			}
+		});
 		btnHumanVsPc.setBounds(140, 200, 142, 35);
 		frame.getContentPane().add(btnHumanVsPc);
 	}
