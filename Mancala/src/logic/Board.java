@@ -202,10 +202,25 @@ public class Board {
     public void set_final() {
         this.increase_mancala(1, sum_board(0));
         this.increase_mancala(2, sum_board(1));
+        for(int i = 0; i < 2; i++) {
+        	for(int j = 0; j < this.board[i].length; j++) {
+        		this.board[i][j] = 0;
+        	}
+        }
     }
 
     public void increase_mancala(int player, int num) {
         this.mancala[player - 1] += num;
+    }
+    
+    public int get_movement(Board b1) {
+    	int row = this.players_turn-1;
+    	for (int i = 0; i < this.board[row].length; i++) {
+    		if(b1.get_board()[row][i] == 0 && this.board[row][i] != 0) {
+    			return i;
+    		}
+    	}
+    	return -1;
     }
 
     /*********************Minimax Functions************************/

@@ -45,17 +45,25 @@ public class Main {
 	}
 
 	public static void humanVShuman() {
-		Board board = new Board(new int[][] {{4,4,4,4,4,4},{4,4,4,4,4,4}}, 1, 1, "MAX", 1, 1);
+		Board board = new Board(new int[][] {{4,4,4,4,4,4},{4,4,4,4,4,4}}, 8, 1, "MAX", 1, 1);
 		board.print();
+		MinimaxSearch minimax = new MinimaxSearch(board, 8, 8, true);
 		while(!board.is_final()) {
-			System.out.println("Choose a number between 1 and 6 representing the cell that you want to choose.");
-			int option = getOption(1, 6);
-			if(board.check_empty(option-1)) {
-				System.out.println("There are no pieces at the cell to move. Choose another one.");
-				continue;
+			System.out.println("Choose a number between 1 and 6 representing the cell that you want to choose, or 0 for a hint.");
+			int option = getOption(0, 6);
+			if(option == 0) {
+				Board new_board = minimax.run();
+				int minimax_movement = board.get_movement(new_board);
+				System.out.println("Hint: Choose cell number " + (minimax_movement+1) + ".");
+			} else {
+				if(board.check_empty(option-1)) {
+					System.out.println("There are no pieces at the cell to move. Choose another one.");
+					continue;
+				}
+				board = board.movement(option-1);
+				board.print();
+				minimax.set_board(board);
 			}
-			board = board.movement(option-1);
-			board.print();
 		}
 		board.set_final(); //updates mancala with the end of game
 		board.print_result();
@@ -66,19 +74,26 @@ public class Main {
 		
 		Board board = new Board(new int[][] {{4,4,4,4,4,4},{4,4,4,4,4,4}}, depth1, 1, "MAX", 1, heuristic);
 		board.print();
-		MinimaxSearch minimax = new MinimaxSearch(board, depth1, depth1, alpha_beta);
+		MinimaxSearch minimax = new MinimaxSearch(board, depth1, this.get_depth(3), alpha_beta);
 		while(!board.is_final()) {
 			if(board.get_players_turn() == 1)
 			{
-				System.out.println("Choose a number between 1 and 6 representing the cell that you want to choose.");
-				int option = getOption(1, 6);
-				if(board.check_empty(option-1)) {
-					System.out.println("There are no pieces at the cell to move. Choose another one.");
-					continue;
+				System.out.println("Choose a number between 1 and 6 representing the cell that you want to choose, or 0 for a hint.");
+				int option = getOption(0, 6);
+				if(option == 0) {
+					board.set_num_levels(this.get_depth(3));
+					Board new_board = minimax.run();
+					int minimax_movement = board.get_movement(new_board);
+					System.out.println("Hint: Choose cell number " + (minimax_movement+1) + ".");
+				} else {
+					if(board.check_empty(option-1)) {
+						System.out.println("There are no pieces at the cell to move. Choose another one.");
+						continue;
+					}
+					board = board.movement(option-1);
+					board.print();
+					minimax.set_board(board);
 				}
-				board = board.movement(option-1);
-				board.print();
-				minimax.set_board(board);
 			} else {
 				int prev_player = board.get_players_turn();
 				board = minimax.run();
@@ -197,7 +212,7 @@ public static void humanPcMenu(){
 
 	int option = getOption(1, 3);
 
-	m.humanVSpc(option, 2, true);
+	m.humanVSpc(option, 1, true);
 }
 	/**
 	 * Function that receives an input from the user between min and max and returns it.

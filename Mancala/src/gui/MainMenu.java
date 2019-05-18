@@ -5,7 +5,6 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import com.sun.java.swing.plaf.windows.resources.windows;
 
 import java.awt.Font;
 import javax.swing.JButton;
