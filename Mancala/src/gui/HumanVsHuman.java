@@ -38,6 +38,7 @@ public class HumanVsHuman {
 	private JButton button_10;
 	private JButton button_4;
 	private JButton button_5;
+	private JButton btnHint;
 	
 	JLabel lblHint;
 
@@ -90,6 +91,7 @@ public class HumanVsHuman {
 				updateBoard();
 		}
 		if (board.is_final()) {
+			btnHint.setEnabled(false);
 			board.set_final(); // updates mancala with the end of game
 			updateBoard();
 			board.print_result();
@@ -190,15 +192,15 @@ public class HumanVsHuman {
 		textField_1.setBounds(382, 63, 40, 121);
 		frame.getContentPane().add(textField_1);
 		
-		JButton btnNewButton = new JButton("Hint");
-		btnNewButton.addActionListener(new ActionListener() {
+		btnHint = new JButton("Hint");
+		btnHint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				getHint();
 			}
 
 		});
-		btnNewButton.setBounds(174, 240, 89, 23);
-		frame.getContentPane().add(btnNewButton);
+		btnHint.setBounds(174, 240, 89, 23);
+		frame.getContentPane().add(btnHint);
 		
 		lblHint = new JLabel("");
 		lblHint.setBounds(60, 274, 312, 14);

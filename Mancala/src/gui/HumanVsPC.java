@@ -38,6 +38,7 @@ public class HumanVsPC {
 	private JButton button_10;
 	private JButton button_4;
 	private JButton button_5;
+	private JButton btnHint;
 	
 	private JLabel lblHint;
 
@@ -106,6 +107,7 @@ public class HumanVsPC {
 			System.out.println("Player 1: " + this.time_needed[0] / (long) this.number_moves[0] /1000F + " seconds");
 			System.out.println("Player 2: " + this.time_needed[1] / (long) this.number_moves[1] /1000F + " seconds");
 			btnPcMove.setEnabled(false);
+			btnHint.setEnabled(false);
 		}
 	}
 	
@@ -122,6 +124,7 @@ public class HumanVsPC {
 				updateBoard();
 		}
 		if (board.is_final()) {
+			btnHint.setEnabled(false);
 			board.set_final(); // updates mancala with the end of game
 			updateBoard();
 			board.print_result();
@@ -244,15 +247,15 @@ public class HumanVsPC {
 		btnPcMove.setBounds(330, 206, 92, 44);
 		frame.getContentPane().add(btnPcMove);
 		
-		JButton btnNewButton = new JButton("Hint");
-		btnNewButton.addActionListener(new ActionListener() {
+		btnHint = new JButton("Hint");
+		btnHint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				getHint();
 			}
 
 		});
-		btnNewButton.setBounds(174, 240, 89, 23);
-		frame.getContentPane().add(btnNewButton);
+		btnHint.setBounds(174, 240, 89, 23);
+		frame.getContentPane().add(btnHint);
 		
 		lblHint = new JLabel("");
 		lblHint.setBounds(60, 274, 312, 14);
