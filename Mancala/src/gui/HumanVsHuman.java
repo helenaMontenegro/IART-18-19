@@ -38,6 +38,8 @@ public class HumanVsHuman {
 	private JButton button_10;
 	private JButton button_4;
 	private JButton button_5;
+	
+	JLabel lblHint;
 
 	public int[] number_moves = new int[] { 0, 0 };
 	public long[] time_needed = new long[] { 0, 0 };
@@ -99,7 +101,7 @@ public class HumanVsHuman {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 455, 300);
+		frame.setBounds(100, 100, 455, 339);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
@@ -187,6 +189,20 @@ public class HumanVsHuman {
 		textField_1.setColumns(10);
 		textField_1.setBounds(382, 63, 40, 121);
 		frame.getContentPane().add(textField_1);
+		
+		JButton btnNewButton = new JButton("Hint");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				getHint();
+			}
+
+		});
+		btnNewButton.setBounds(174, 240, 89, 23);
+		frame.getContentPane().add(btnNewButton);
+		
+		lblHint = new JLabel("");
+		lblHint.setBounds(60, 274, 312, 14);
+		frame.getContentPane().add(lblHint);
 		addButtonListeners();
 	}
 
@@ -265,7 +281,14 @@ public class HumanVsHuman {
 
 	}
 
+	private void getHint() {
+		Board new_board = minimax.run();
+		int minimax_movement = board.get_movement(new_board);
+		lblHint.setText("Hint: Choose cell number " + (minimax_movement+1) + ". (Counting from the left)");
+		
+	}
 	private void updateBoard() {
+		lblHint.setText("");
 		button_0.setText(String.valueOf(board.get_board()[1][0]));
 		button_1.setText(String.valueOf(board.get_board()[1][1]));
 		button_2.setText(String.valueOf(board.get_board()[1][2]));
@@ -308,5 +331,4 @@ public class HumanVsHuman {
 			button_11.setEnabled(false);
 		}
 	}
-
 }
