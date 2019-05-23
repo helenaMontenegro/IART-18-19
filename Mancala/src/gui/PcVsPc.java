@@ -39,6 +39,7 @@ public class PcVsPc {
 	private JButton button_4;
 	private JButton button_5;
 
+	private JLabel lblHint;
 	public int[] number_moves = new int[] { 0, 0 };
 	public long[] time_needed = new long[] { 0, 0 };
 	private JButton btnPcMove;
@@ -223,6 +224,10 @@ public class PcVsPc {
 		});
 		btnPcMove.setBounds(330, 206, 92, 44);
 		frame.getContentPane().add(btnPcMove);
+		
+		lblHint = new JLabel("");
+		lblHint.setBounds(6, 236, 312, 14);
+		frame.getContentPane().add(lblHint);
 	}
 
 
@@ -241,6 +246,14 @@ public class PcVsPc {
 		button_11.setText(String.valueOf(board.get_board()[0][5]));
 		textField.setText(String.valueOf(board.mancala[0]));
 		textField_1.setText(String.valueOf(board.mancala[1]));
+		if(board.is_final()) {
+			 if (board.mancala[1] > board.mancala[0]) {
+				 lblHint.setText("Player 2 wins!");
+		        } else if (board.mancala[0] > board.mancala[1]) {
+		           lblHint.setText("Player 1 wins!");
+		        } else {
+		            lblHint.setText("The players tied!");
+		        }
+		}
 	}
-
 }

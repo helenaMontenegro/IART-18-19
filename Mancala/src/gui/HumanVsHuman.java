@@ -305,6 +305,7 @@ public class HumanVsHuman {
 		button_11.setText(String.valueOf(board.get_board()[0][5]));
 		textField.setText(String.valueOf(board.mancala[0]));
 		textField_1.setText(String.valueOf(board.mancala[1]));
+		lblHint.setText("");
 		if (board.get_players_turn() == 1) {
 			button_0.setEnabled(false);
 			button_1.setEnabled(false);
@@ -331,6 +332,15 @@ public class HumanVsHuman {
 			button_9.setEnabled(false);
 			button_10.setEnabled(false);
 			button_11.setEnabled(false);
+		}
+		if(board.is_final()) {
+			 if (board.mancala[1] > board.mancala[0]) {
+				 lblHint.setText("Player 2 wins!");
+		        } else if (board.mancala[0] > board.mancala[1]) {
+		           lblHint.setText("Player 1 wins!");
+		        } else {
+		            lblHint.setText("The players tied!");
+		        }
 		}
 	}
 }

@@ -104,7 +104,7 @@ public class HumanVsPC {
 			System.out.println("Player 1: " + this.number_moves[0]);
 			System.out.println("Player 2: " + this.number_moves[1]);
 			System.out.println("\nAverage time needed for each play:");
-			System.out.println("Player 1: " + this.time_needed[0] / (long) this.number_moves[0] /1000F + " seconds");
+			//System.out.println("Player 1: " + this.time_needed[0] / (long) this.number_moves[0] /1000F + " seconds");
 			System.out.println("Player 2: " + this.time_needed[1] / (long) this.number_moves[1] /1000F + " seconds");
 			btnPcMove.setEnabled(false);
 			btnHint.setEnabled(false);
@@ -128,6 +128,8 @@ public class HumanVsPC {
 			board.set_final(); // updates mancala with the end of game
 			updateBoard();
 			board.print_result();
+			btnPcMove.setEnabled(false);
+			btnHint.setEnabled(false);
 		}
 	}
 
@@ -328,6 +330,8 @@ public class HumanVsPC {
 		button_11.setText(String.valueOf(board.get_board()[0][5]));
 		textField.setText(String.valueOf(board.mancala[0]));
 		textField_1.setText(String.valueOf(board.mancala[1]));
+		lblHint.setText("");
+		
 		if (board.get_players_turn() == 1) {
 			btnPcMove.setEnabled(false);
 			button_0.setEnabled(false);
@@ -356,6 +360,15 @@ public class HumanVsPC {
 			button_9.setEnabled(false);
 			button_10.setEnabled(false);
 			button_11.setEnabled(false);
+		}
+		if(board.is_final()) {
+			 if (board.mancala[1] > board.mancala[0]) {
+				 lblHint.setText("Player 2 wins!");
+		        } else if (board.mancala[0] > board.mancala[1]) {
+		           lblHint.setText("Player 1 wins!");
+		        } else {
+		            lblHint.setText("The players tied!");
+		        }
 		}
 	}
 
